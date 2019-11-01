@@ -22,20 +22,22 @@ $.ajaxSetup({
          }
      }
 });
-$("#submitsignup").click(function(e){
-	e.preventDefault(); 
+
+$("#orange").click(function(e){
+
+	e.preventDefault();
 	$.ajax({
 	url:"/",
 	type:"post",
-	datatype:"json", 
-	data:$("#formsignup").serialize(),
+	datatype:"json",
+	data:$("#loginsubmit").serialize(),
 	success:function(data)
 		{
 
 			if(data.status==1)
 			{
 			alert("signup successful");
-			window.location.replace("{% url 'list' %}")
+			window.location.replace("index.html")
 			}
 			else if(data.status==0)
 			{
@@ -46,7 +48,7 @@ $("#submitsignup").click(function(e){
 		else{
 
 
-                  $("#formsignup :input:not(input[type='hidden'],input[type='submit'])").each(function ()
+                  $("#loginsubmit :input:not(input[type='hidden'],input[type='submit'])").each(function ()
                   {                                                   // not is given for avoiding hidden fields and submit each fn is given for each iteration
 
                             var current = $(this).parent();  // here parent refers to the form or div where the code is enclosed
@@ -55,6 +57,7 @@ $("#submitsignup").click(function(e){
                             {                                          // from views.py we get the k-v pair index refers to key
                              if (current_name == index)
                              {
+                                    current.next().html("");
                                    current.after("<div class='error'></div>");
                                    current.next().html(value);
 
@@ -67,6 +70,81 @@ $("#submitsignup").click(function(e){
 
 
 
+
+
+		},
+		error:function()
+		{
+		alert("connection failed");
+		}
+});
+});
+
+
+
+
+
+
+
+
+
+$("#commentsubmit").click(function(e){
+	e.preventDefault();
+	$.ajax({
+	url:"{% url 'comments' %}",
+	type:"post",
+	datatype:"json",
+	data:$("#commentform").serialize(),
+	success:function(data)
+		{
+
+		if(data.status==1)
+		{
+		$("#commentform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
+                  {
+
+                            var current = $(this).parent();
+                            var current_name = $(this).attr('name');
+                            $.each(data.key, function (index, value)
+                            {
+                             if (current_name == index)
+                             {
+                                    current.next().html("");
+                                   current.after("<div class='error'></div>");
+                                   current.next().html(value);
+
+
+                                    }
+                                });
+                              });
+                        }
+
+
+
+
+
+
+        else
+        {
+
+                  $("#commentform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
+                  {
+
+                            var current = $(this).parent();
+                            var current_name = $(this).attr('name');
+                            $.each(data.key, function (index, value)
+                            {
+                             if (current_name == index)
+                             {
+                                    current.next().html("");
+                                   current.after("<div class='error'></div>");
+                                   current.next().html(value);
+
+
+                                    }
+                                });
+                              });
+                        }
 
 
 		},

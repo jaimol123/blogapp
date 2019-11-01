@@ -44,8 +44,15 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google'
-]
+    'allauth.socialaccount.providers.google',
+    'ckeditor'
+    ]
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.ionos.com'
+EMAIL_HOST_USER = 'albin@cloudaven.com'
+EMAIL_HOST_PASSWORD = 'Albin@123'
+EMAIL_PORT = 587
 
 AUTH_USER_MODEL = 'blogapp.Reeluser'
 
@@ -60,6 +67,7 @@ MIDDLEWARE = [
 
 ]
 
+
 ROOT_URLCONF = 'blogproject.urls'
 
 TEMPLATES = [
@@ -73,7 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request'
+
 
             ],
         },
@@ -84,7 +92,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-
+AUTH_USER_MODEL = 'blogapp.Reeluser'
 
 SITE_ID = 7
 ACCOUNT_USERNAME_REQUIRED = False
@@ -171,6 +179,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CKEDITOR_CONFIGS = {
+    'default': {
+         'toolbar': 'Custom',
+        'width': '461px',
+        'height': 'auto',
+        'toolbar_Custom': [
+             ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+         ],
+    }
+}
+
+
+
+
+
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -194,3 +220,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "assets"),
 ]
+
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+

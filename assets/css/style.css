@@ -71,8 +71,8 @@ textarea:focus {
 
 a:hover,
 a:focus {
-	text-decoration: none;
-	outline: none;
+	text-decoration: none !important;
+	color: #fbd577 !important;
 }
 
 ul,
@@ -295,6 +295,7 @@ ol {
 .main-menu li a:hover,
 .footer-menu li a:hover {
 	color: #ff2a6b;
+	text-decoration: none;
 }
 
 .header-search {
