@@ -1,17 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
  {% block content %}
-
-
-{% block socialmedia_links %}
-	{% for icon in social_icons %}
-	   <div class="header-social">
-		  <a href="{{icon.social_url}}"><i class="{{icon.icon_name}}"></i></a>
-		</div>
-	{% endfor %}
-{% endblock socialmedia_links %}
-
 
 
 <section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
@@ -19,6 +10,14 @@
 			<h2>Recipe</h2>
 		</div>
 	</section>
+
+{% block socialmedia_links %}
+	{% for icon in social_icons %}
+	   <div class="header-social">
+		  <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}" ></i></a>
+		</div>
+	{% endfor %}
+{% endblock socialmedia_links %}
 
 
 
@@ -33,18 +32,20 @@
 					<select name="type">
 						<option selected="selected"></option>
 
-						<option>breakfast</option>
-						<option>lunch</option>
-						<option>dinner</option>
+						<option value="breakfast">breakfast</option>
+						<option value="lunch">lunch</option>
+						<option value="dinner">dinner</option>
 
 					</select>
+
 					<select name="category">
-						<option selected="selected"></option>
 						{% for items in recipes %}
+
+						<option selected="selected"></option>
 						<option>{{items.category}}</option>
 						{% endfor %}
-					</select>
 
+					</select>
 
 					<input type="text" placeholder="Search Receipies" name="name", value="">
 					<button class="bsf-btn">Search</button>
@@ -79,7 +80,7 @@
 				<div class="col-lg-4 col-md-6">
 
 					<div class="recipe">
-						<img src="{{image.recipe_image.url}}"> alt="">
+						<img src="{{image.recipe_image.url}}" alt="">
 						<div class="recipe-info-warp">
 							<div class="recipe-info">
 
@@ -102,6 +103,34 @@
 				{% endfor %}
 
 			</div>
+			<div class="site-pagination">
+
+				{% if recipes.has_other_pages %}
+				  <ul class="pagination">
+					{% if recipes.has_previous %}
+					  <li><a href="?page={{ recipes.previous_page_number }}">&laquo;</a></li>
+					{% else %}
+					  <li class="disabled"><span>&laquo;</span></li>
+					{% endif %}
+					{% for i in recipes.paginator.page_range %}
+					  {% if recipes.number == i %}
+						<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+					  {% else %}
+						<li><a href="?page={{ i }}">{{ i }}</a></li>
+					  {% endif %}
+					{% endfor %}
+					{% if recipes.has_next %}
+					  <li><a href="?page={{ recipes.next_page_number }}">&raquo;</a></li>
+					{% else %}
+					  <li class="disabled"><span>&raquo;</span></li>
+					{% endif %}
+				  </ul>
+				{% endif %}
+
+
+
+
+			</div>
 		</div>
 	</section>
 
@@ -112,12 +141,15 @@
 	<!-- Gallery section -->
 	<div class="gallery">
 		<div class="gallery-slider owl-carousel">
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>
+			{% for img in footerimg %}
+       			<div class="gs-item set-bg" data-setbg="{{img.image.url}}"></div>
+       			 {% endfor %}
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>-->
 		</div>
 	</div>
 	<!-- Gallery section end -->
@@ -125,9 +157,11 @@
 
 	{% endblock %}
 
-	<!--====== Javascripts & Jquery ======-->
-	<script src="../assets/js/jquery-3.2.1.min.js"></script>
-	<script src="../assets/js/owl.carousel.min.js"></script>
-	<script src="../assets/js/main.js"></script>
-</body>
-</html>
+ {% block socialmedia_footer %}
+{% for icon in social_icons %}
+	   <div class="header-social">
+		  <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}"></i></a>
+		</div>
+	{% endfor %}
+
+{% endblock socialmedia_footer %}

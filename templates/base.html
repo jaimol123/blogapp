@@ -46,7 +46,7 @@
                {% else %}
 
                  <a href="#" data-toggle="modal" data-target="#login11"><i class="fa fa-sign-in"></i> Sign In</a>
-                    |
+                    /
                 <a href="#" data-toggle="modal" data-target="#sign">Sign Up</a>
                 {% endif %}
 
@@ -92,7 +92,7 @@
 {% endblock %}
 
 	<!--Footer section  -->
-    <footer class="footer-section set-bg" data-setbg="{% static 'img/footer-bg.jpg' %}">
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
@@ -100,12 +100,10 @@
                         <img src="{% static 'img/logo.png' %}" alt="">
                     </div>
                     <div class="footer-social">
-                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-dribbble"></i></a>
-                        <a href="#"><i class="fa fa-behance"></i></a>
-                        <a href="#"><i class="fa fa-linkedin"></i></a>
+
+                        {% block socialmedia_footer %}
+
+                         {% endblock socialmedia_footer %}
                     </div>
                 </div>
                 <div class="col-lg-6 text-lg-right">

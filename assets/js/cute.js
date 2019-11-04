@@ -65,11 +65,43 @@ $("#orange").click(function(e){
                                     }
                                 });
                               });
-                        }
+               }
+           },
+		error:function()
+		{
+		alert("connection failed");
+		}
+});
+});
+
+$("#contactsubmit").click(function(e){
+	e.preventDefault();
+	$.ajax({
+	url:"/contact/",
+	type:"post",
+	datatype:"json",
+	data:$("#contactform").serialize(),
+	success:function(data)
+		{
+
+		if(data.status==2)
+		{
 
 
 
+                  alert("succeesss");
+                  }
 
+
+        else if(data.status==3)
+               {
+
+                alert("failure");
+               }
+        else
+            {
+            alert("failed to receive")
+            }
 
 
 		},
@@ -81,17 +113,10 @@ $("#orange").click(function(e){
 });
 
 
-
-
-
-
-
-
-
 $("#commentsubmit").click(function(e){
 	e.preventDefault();
 	$.ajax({
-	url:"{% url 'comments' %}",
+	url:"/comment/",
 	type:"post",
 	datatype:"json",
 	data:$("#commentform").serialize(),
@@ -100,51 +125,22 @@ $("#commentsubmit").click(function(e){
 
 		if(data.status==1)
 		{
-		$("#commentform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
-                  {
 
-                            var current = $(this).parent();
-                            var current_name = $(this).attr('name');
-                            $.each(data.key, function (index, value)
-                            {
-                             if (current_name == index)
-                             {
-                                    current.next().html("");
-                                   current.after("<div class='error'></div>");
-                                   current.next().html(value);
+                  alert("success")
+                  console.log("working correctly")
+
+                  }
 
 
-                                    }
-                                });
-                              });
-                        }
+        else if(data.status==0)
+               {
 
-
-
-
-
-
+                alert("failure");
+               }
         else
-        {
-
-                  $("#commentform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
-                  {
-
-                            var current = $(this).parent();
-                            var current_name = $(this).attr('name');
-                            $.each(data.key, function (index, value)
-                            {
-                             if (current_name == index)
-                             {
-                                    current.next().html("");
-                                   current.after("<div class='error'></div>");
-                                   current.next().html(value);
-
-
-                                    }
-                                });
-                              });
-                        }
+            {
+            alert("failed to receive")
+            }
 
 
 		},

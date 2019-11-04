@@ -11,6 +11,20 @@
 	</section>
 	<!-- Hero section end -->
 
+ {% block socialmedia_links %}
+                {% for icon in links %}
+                       <div class="header-social">
+                          <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}"></i></a>
+		                </div>
+	            {% endfor %}
+        {% endblock socialmedia_links %}
+
+
+
+
+
+
+
 
 
 	<!-- Search section -->
@@ -46,7 +60,7 @@
 				<div class="col-lg-8">
 					<div class="contact-form-warp">
 						<h4>Leave a comment</h4>
-						<form class="contact-form" action="{% url 'contact' %}" method="post">
+						<form class="contact-form" id="contactform" method="post">
 							{% csrf_token %}
 							<div class="row">
 								<div class="col-md-6">
@@ -58,7 +72,8 @@
 								<div class="col-md-12">
 									<input type="text" placeholder="Subject" name="subject" value="">
 									<textarea placeholder="Message"  name="message" value="" ></textarea>
-									<button class="site-btn">Send</button>
+									<button class="site-btn" id="contactsubmit" >Send</button>
+
 								</div>
 							</div>
 						</form>
@@ -66,7 +81,7 @@
 				</div>
 				<div class="col-lg-4">
 					<div class="contact-logo">
-						<img src="img/logo.png" alt="">
+						<img src="{% static 'img/logo.png' %}" alt="">
 					</div>
 					<div class="contact-info">
 						<ul class="ct-list">
@@ -104,28 +119,30 @@
 	<!-- Gallery section -->
 	<div class="gallery">
 		<div class="gallery-slider owl-carousel">
-			<div class="gs-item set-bg" data-setbg="img/instagram/1.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/2.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/3.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/4.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/5.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/6.jpg"></div>
+			{% for img in footerimg %}
+       	<div class="gs-item set-bg" data-setbg="{{img.image.url}}"></div>
+       		 {% endfor %}
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>-->
 		</div>
 	</div>
 	<!-- Gallery section end -->
-
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWTIlluowDL-X4HbYQt3aDw_oi2JP0Krc"></script>-->
+<!--<script src="{% static 'js/map.js' %}"></script>-->
 {% endblock %}
 
+{% block socialmedia_footer %}
+{% for link in links %}
+	   <div class="header-social">
+		  <a href="{{link.social_url}}" target="_blank"><i class="{{link.icon_name}}"></i></a>
+		</div>
+	{% endfor %}
 
-	<!--====== Javascripts & Jquery ======-->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/main.js"></script>
+{% endblock socialmedia_footer %}
 
 
-	<!-- load for map -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWTIlluowDL-X4HbYQt3aDw_oi2JP0Krc"></script>
-	<script src="js/map.js"></script>
 	
-</body>
-</html>

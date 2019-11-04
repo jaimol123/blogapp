@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'ckeditor'
+
     ]
 
 EMAIL_USE_TLS = True
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 
 ]
 

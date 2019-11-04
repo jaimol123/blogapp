@@ -12,6 +12,18 @@
 	</section>
 	<!-- Hero section end -->
 
+{% block socialmedia_links %}
+	{% for icon in links %}
+	   <div class="header-social">
+		  <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}" ></i></a>
+		</div>
+	{% endfor %}
+{% endblock socialmedia_links %}
+
+
+
+
+
 
 	<!-- Search section -->
 	<div class="search-form-section">
@@ -50,7 +62,7 @@
 					<div class="site-btn">Read more</div>
 				</div>
 				<div class="col-lg-6">
-					<img src="img/about.jpg" alt="">
+					<img src="{% static 'img/about.jpg' %}" alt="">
 				</div>
 			</div>
 		</div>
@@ -65,28 +77,28 @@
 				<div class="row">
 					<div class="col-lg-3 col-sm-6 fact-item">
 						<div class="fact-icon">
-							<img src="img/icon/1.png" alt="">
+							<img src="{% static 'img/icon/1.png' %}" alt="">
 						</div>
 						<h2>1287</h2>
 						<p>Amazing receipies</p>
 					</div>
 					<div class="col-lg-3 col-sm-6 fact-item">
 						<div class="fact-icon">
-							<img src="img/icon/2.png" alt="">
+							<img src="{% static 'img/icon/2.png' %}" alt="">
 						</div>
 						<h2>25</h2>
 						<p>Wine pairings</p>
 					</div>
 					<div class="col-lg-3 col-sm-6 fact-item">
 						<div class="fact-icon">
-							<img src="img/icon/3.png" alt="">
+							<img src="{% static 'img/icon/3.png' %}" alt="">
 						</div>
 						<h2>471</h2>
 						<p>Meat receipies</p>
 					</div>
 					<div class="col-lg-3 col-sm-6 fact-item">
 						<div class="fact-icon">
-							<img src="img/icon/4.png" alt="">
+							<img src="{% static 'img/icon/4.png' %}" alt="">
 						</div>
 						<h2>326</h2>
 						<p>Desert receipies</p>
@@ -111,7 +123,7 @@
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec varius dui. Suspendisse potenti. Vestibulum ac pellentesque tortor. Aenean congue sed metus in iaculis. Cras a tortor enim. </p>
 				</div>
 				<div class="col-lg-6">
-					<img class="nl-sp-img" src="img/newslatter.png" alt="">
+					<img class="nl-sp-img" src="{% static 'img/newslatter.png' %}" alt="">
 				</div>
 			</div>
 		</div>
@@ -122,23 +134,32 @@
 	<!-- Gallery section -->
 	<div class="gallery">
 		<div class="gallery-slider owl-carousel">
-			<div class="gs-item set-bg" data-setbg="img/instagram/1.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/2.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/3.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/4.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/5.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/6.jpg"></div>
+			{% for img in footerimg %}
+       			<div class="gs-item set-bg" data-setbg="{{img.image.url}}"></div>
+			{% endfor %}
+
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>-->
+<!--			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>-->
 		</div>
 	</div>
 	<!-- Gallery section end -->
 
 {% endblock %}
 
+{% block socialmedia_footer %}
+{% for icon in links %}
+	   <div class="header-social">
+		  <a href="{{icon.social_url}}"><i class="{{icon.icon_name}}"></i></a>
+		</div>
+	{% endfor %}
+
+{% endblock socialmedia_footer %}
 
 
-	<!--====== Javascripts & Jquery ======-->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/main.js"></script>
-</body>
-</html>
+
+
+

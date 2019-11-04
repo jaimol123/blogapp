@@ -11,31 +11,16 @@
 
 
 
-<!--<div class="container">-->
-<!--    		<div class="header-social">-->
-<!--						{% for icon in icon %}-->
-<!--                    <a href="{{icon.social_url}}"> <a href="/"><i class="{{icon.icon_name}}"></i></a> </a>-->
 
-<!--					{% endfor %}-->
-<!--                </div>-->
-<!--			</div>-->
 
 {% block socialmedia_links %}
-	{% for icon in social_icons %}
+	{% for view in social_icons %}
 	   <div class="header-social">
-		  <a href="{{icon.social_url}}"><i class="{{icon.icon_name}}"></i></a>
+		  <a href="{{view.social_url}}"><i class="{{view.icon_name}}"></i></a>
 		</div>
 	{% endfor %}
 {% endblock socialmedia_links %}
 
-
-
-
-
-
-
-
-	<!-- Hero section end -->
 
 
 <!--	 Search section-->
@@ -51,7 +36,6 @@
 						<option>Side Dishes</option>
 					</select>
 					<select>
-						<option>All Ingredients</option>
 						<option>Breakfast</option>
 						<option>Lunch</option>
 						<option>Dinner</option>
@@ -102,8 +86,10 @@
 							{% for ing in view.food.all %}
 							<form class="filter-form">
 								<div class="check-warp">
-									<input type="checkbox" >
-									<label >{{ing.ingredients}}</label>
+<!--									<input type="checkbox" >-->
+									<li>
+									{{ing.ingredients}}
+									</li>
 								</div>
 								{% endfor %}
 
@@ -131,19 +117,21 @@
 	<section class="comment-section spad pt-0" >
 		<div class="container">
 			<h4>Leave a comment</h4>
-			<form class="comment-form">
+			<form class="comment-form" id="commentform" method="post">
 				{% csrf_token %}
 				<div class="row">
 					<div class="col-md-6">
 						<input type="text" placeholder="Name" name="name" value="">
+
 					</div>
+
 					<div class="col-md-6">
 						<input type="text" placeholder="E-mail" name="email" value="">
 					</div>
 					<div class="col-md-12">
 						<input type="text" placeholder="Subject" name="subject" value="">
 						<textarea placeholder="Message" name="message" value=""></textarea>
-						<button class="site-btn" >Send</button>
+						<button class="site-btn" id="commentsubmit">Send</button>
 
 					</div>
 				</div>
@@ -156,18 +144,18 @@
 	<!-- Gallery section -->
 	<div class="gallery">
 		<div class="gallery-slider owl-carousel">
-			<div class="gs-item set-bg" data-setbg="img/instagram/1.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/2.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/3.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/4.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/5.jpg"></div>
-			<div class="gs-item set-bg" data-setbg="img/instagram/6.jpg"></div>
+			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>
+			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>
+			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>
+			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>
+			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>
+			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>
 		</div>
 	</div>
 	{% endblock %}
 
-	<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="/js/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="{% static 'js/ckeditor/ckeditor.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/ckeditor/adapters/jquery.js' %}"></script>
 	<script type="text/javascript">
 
 

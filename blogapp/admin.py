@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Reeluser,Receipe,Ingredients,Comments,Slider,SocialLinks,Contact
+from . models import Reeluser,Receipe,Ingredients,Comments,Slider,SocialLinks,Contact,FooterImage
 
 
 class ReeluserAdmin(admin.ModelAdmin):
@@ -7,7 +7,7 @@ class ReeluserAdmin(admin.ModelAdmin):
     list_display  = ('username', 'email','password')
     search_fields = ['username']
 
-admin.site.register(Reeluser, ReeluserAdmin)
+
 
 class IngredientsInline(admin.TabularInline):
     model = Ingredients
@@ -16,33 +16,38 @@ class IngredientsInline(admin.TabularInline):
 class CommentsAdmin(admin.ModelAdmin):
 
     list_display = ('name', 'email', 'subject')
-admin.site.register(Comments, CommentsAdmin)
+
 
 class ReceipeAdmin(admin.ModelAdmin):
 
-    list_display = ('receipe_name', 'category', 'type','pub_date', 'recipe_image')
+    list_display = ('receipe_name', 'category', 'type', 'recipe_image')
     search_fields = ['receipe_name']
     list_filter = ['pub_date']
     inlines = [IngredientsInline]
-admin.site.register(Receipe, ReceipeAdmin)
+
 
 
 class SliderAdmin(admin.ModelAdmin):
     list_display= ('slider_image','slider_caption1', 'slider_caption2', 'slider_caption3')
-admin.site.register(Slider, SliderAdmin)
+
 
 
 class SocialLinkAdmin(admin.ModelAdmin):
     list_display = ('icon_name', 'social_url')
-admin.site.register(SocialLinks, SocialLinkAdmin )
+
 
 
 class ContactAdmin(admin.ModelAdmin):
 
-    fields = ('name', 'email', 'subject', 'msg')
+    fields = ('contact_name', 'contact_email', 'contact_subject', 'contact_msg')
+
+
+
+
 admin.site.register(Contact, ContactAdmin)
-
-
-
-
-
+admin.site.register(Reeluser, ReeluserAdmin)
+admin.site.register(Comments, CommentsAdmin)
+admin.site.register(Receipe, ReceipeAdmin)
+admin.site.register(Slider, SliderAdmin)
+admin.site.register(SocialLinks, SocialLinkAdmin )
+admin.site.register(FooterImage, admin.ModelAdmin)

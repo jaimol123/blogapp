@@ -10,13 +10,15 @@ class Receipe(models.Model):
     category=models.CharField( max_length= 25, null=True, blank=True )
     type=models.CharField(max_length=30, null=True, blank=True)
     step = RichTextField(null= True)
-    pub_date = models.DateField(datetime.datetime.now, null=True, blank=True)
+    pub_date = models.DateField(default=datetime.datetime.now, null=True, blank=True)
     prep_time = models.CharField(max_length=25, null=True, blank=True)
 
     class Meta:
             db_table="receipe"
             verbose_name_plural= "Receipe"
             ordering=['pub_date']
+
+
 
 class Reeluser(AbstractUser):
     token=models.CharField(max_length=255, default="111", null=True)
@@ -66,14 +68,22 @@ class SocialLinks(models.Model):
         verbose_name_plural= "Social Links"
 
 class Contact(models.Model):
-    name = models.CharField(max_length=25, null=True, blank=True)
-    subject = models.CharField(max_length=25, null=True, blank=True)
-    msg = models.TextField(max_length=255, null=True, blank=True)
-    email = models.EmailField(max_length=25, null=True, unique=True, blank=True)
+    contact_name = models.CharField(max_length=25, null=True, blank=True)
+    contact_subject = models.CharField(max_length=25, null=True, blank=True)
+    contact_msg = models.TextField(max_length=255, null=True, blank=True)
+    contact_email = models.EmailField(max_length=25, null=True, unique=True, blank=True)
 
     class Meta:
         db_table="contact"
         verbose_name_plural="contact"
+
+class FooterImage(models.Model):
+    image= models.FileField(null=True, blank=True)
+
+    class Meta:
+        db_table="footerimage"
+        verbose_name_plural="FooterImage"
+
 
 
 

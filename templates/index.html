@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load socialaccount %}
 
 {% block content %}
 
-{% block socialmedia_links %}
-	{% for icon in social_icons %}
-	   <div class="header-social">
-		  <a href="{{icon.social_url}}"><i class="{{icon.icon_name}}"></i></a>
-		</div>
-	{% endfor %}
-{% endblock socialmedia_links %}
+        {% block socialmedia_links %}
+                {% for icon in social_icons %}
+                       <div class="header-social">
+                          <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}"></i></a>
+		                </div>
+	            {% endfor %}
+        {% endblock socialmedia_links %}
 
 <div class="container">
     <!-- Modal -->
@@ -17,7 +18,7 @@
         <div class="modal-dialog">
 
             <!-- Modal content-->
-            {% load socialaccount %}
+
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal" type="button">&times;</button>
@@ -110,23 +111,23 @@
 
 <!-- Hero section -->
 <section class="hero-section">
-    {% for slide in slide %}
-    <div class="hero-slider owl-carousel">
 
-        <div class="hero-slide-item set-bg" data-setbg="{{slide.slider_image.url}}">
+    <div class="hero-slider owl-carousel">
+         {% for slides in slider %}
+        <div class="hero-slide-item set-bg" data-setbg="{{slides.slider_image.url}}">
 
             <div class="hs-text">
 
-                <h2 class="hs-title-1"><span>{{slide.slider_caption1}}</span></h2>
-                <h2 class="hs-title-2"><span>{{slide.slider_caption2}}</span></h2>
-                <h2 class="hs-title-3"><span>{{slide.slider_caption3}}</span></h2>
+                <h2 class="hs-title-1"><span>{{slides.slider_caption1}}</span></h2>
+                <h2 class="hs-title-2"><span>{{slides.slider_caption2}}</span></h2>
+                <h2 class="hs-title-3"><span>{{slides.slider_caption3}}</span></h2>
             </div>
 
         </div>
-
+            {% endfor %}
 
     </div>
-    {% endfor %}
+
 </section>
 <!-- Hero section end -->
 
@@ -435,26 +436,23 @@
                 </div>
             </div>
         </div>
+    </div>
 
 </section>
 <!-- Review sec<tion end -->
 
 <!-- Gallery section -->
 <div class="gallery">
+
     <div class="gallery-slider owl-carousel">
-        <div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>
-        <div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>
-        <div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>
-        <div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>
-        <div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>
-        <div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>
+        {% for img in footerimg %}
+       <div class="gs-item set-bg" data-setbg="{{img.image.url}}"></div>
+        {% endfor %}
     </div>
+
 </div>
-<!-- Gallery section end -->
-<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
-<script src="{% static 'js/cute.js' %}"></script>
+
+
 
 
 <script>
@@ -486,3 +484,13 @@
 
 </script>
 {% endblock %}
+
+  {% block socialmedia_footer %}
+{% for icon in social_icons %}
+	   <div class="header-social">
+		  <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}"></i></a>
+		</div>
+	{% endfor %}
+
+{% endblock socialmedia_footer %}
+

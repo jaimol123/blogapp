@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.views.generic import ListView,TemplateView,View
 from django.http import HttpResponse,request
 from django.views.generic.detail import DetailView
-from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact
+from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage
 from . forms import Signup,Loginform
 import json
 from django.contrib.auth.models import User,Group
@@ -17,6 +17,8 @@ from django.core.mail import EmailMessage
 import datetime
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 
@@ -29,8 +31,9 @@ class Home(View):
         query1 = Receipe.objects.all().order_by('-pub_date')[:6]
         query2= Slider.objects.all()
         query3 = SocialLinks.objects.all()
-        print(query3)
-        return render(request,"index.html",{'myobj':form, 'mylogin':form1, 'query1':query1, "slide" : query2, 'social_icons':query3})
+        query4= FooterImage.objects.all()
+        print(query4)
+        return render(request,"index.html",{'myobj':form, 'mylogin':form1, 'query1':query1, "slider" : query2, 'social_icons':query3, 'footerimg':query4})
 
     def linkmail(request):
         token=request.GET["token"]
@@ -118,17 +121,21 @@ class Login(View):
 class Listitems(View):
 
     def get(self, request):
+        queryset = Receipe.objects.order_by('-id')
+        paginator = Paginator(queryset, 6)
+        page = request.GET.get('page')
+        recipes = paginator.get_page(page)
 
-        queryset = Receipe.objects.all()
         query3 = SocialLinks.objects.all()
-        return render(request, "recipes.html", {'recipes':queryset,'social_icons':query3})
+        query4 = FooterImage.objects.all()
+        return render(request, "recipes.html", {'recipes':recipes,'social_icons':query3, 'footerimg': query4})
 
     def post(self, request):
         type= request.POST['type']
         name = request.POST['name']
         category = request.POST['category']
-
         query_recipe = Receipe.objects.filter(Q(category__contains=category)).filter(Q(type__contains=type)).filter(Q(receipe_name__contains=name))
+        print(query_recipe)
         print("query------------------------------", query_recipe)
         return render(request,"recipes.html", {"recipes":query_recipe})
 
@@ -137,27 +144,28 @@ class Listitems(View):
 
 class Details(DetailView):
     model = Receipe
-    queryset = Receipe.objects.all()
     template_name = "recipe-single.html"
     context_object_name = "view"
 
 
+
+
 class Comment(View):
 
-    def get(self, request):
-        query3 = SocialLinks.objects.all()
-        return render(request, "single-recipe.html", {'icon' : query3})
+    # def get(self, request):
+    #     query3 = SocialLinks.objects.all()
+    #     return render(request, "recipe-single.html", {'icon' : query3})
 
     def post(self, request):
             dict6 = {}
-            name=request.user
-            receipe_name=request.POST['name']
+            name=request.POST['name']
+            idno=request.POST['id']
+            print("--------------->>>",idno)
             email=request.POST['email']
             subject= request.POST['subject']
             message= request.POST['message']
             if (name != "" and email != "" and subject != "" and message != ""):
-                r1= Receipe.objects.get(receipe_name=receipe_name)
-                c1= Comments(name=name,subject=subject, email=email, msg=message, receipe_name=r1)
+                c1= Comments(name=name,subject=subject, email=email, msg=message,receipe_name_id=idno)
                 c1.save()
                 dict6["status"]=1
             else:
@@ -171,12 +179,16 @@ class Comment(View):
 class About(View):
 
     def get(self, request):
-        return render(request, "about.html")
+        link = SocialLinks.objects.all()
+        query4 = FooterImage.objects.all()
+        return render(request, "about.html",{'links': link, 'footerimg': query4})
 
-class Contact(View):
+class ContactView(View):
 
     def get(self, request):
-        return render(request, "contact.html")
+        link = SocialLinks.objects.all()
+        query4 = FooterImage.objects.all()
+        return render(request, "contact.html", {'links': link, 'footerimg':query4 })
 
     def post(self, request):
         dict7={}
@@ -185,11 +197,17 @@ class Contact(View):
         subject=request.POST['subject']
         message= request.POST['message']
         if(name!="" and email!="" and subject!="" and message!=""):
-            c4= Contact(name=name, email=email, subject=subject, message= message )
-            c4.save()
-            dict7["status"]="success"
+            contact = Contact()
+
+            contact.contact_msg = message
+            contact.contact_email = email
+            contact.contact_name = name
+            contact.contact_subject = subject
+            contact.save()
+           # send_mail(subject, message, [email], ['jaimoljoseph.cst@gmail.com'],fail_silently=False )
+            dict7["status"]=2
         else:
-            dict7["status"]= "failed"
+            dict7["status"]= 3
 
         jsondata= json.dumps(dict7)
         return HttpResponse(jsondata, content_type="application/json")
