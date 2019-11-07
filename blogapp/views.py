@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.views.generic import ListView,TemplateView,View
 from django.http import HttpResponse,request
 from django.views.generic.detail import DetailView
-from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage
+from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage,Feature, AboutUs, Rating
 from . forms import Signup,Loginform
 import json
 from django.contrib.auth.models import User,Group
@@ -18,7 +18,8 @@ import datetime
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+import math
+import smtplib
 
 
 
@@ -32,8 +33,9 @@ class Home(View):
         query2= Slider.objects.all()
         query3 = SocialLinks.objects.all()
         query4= FooterImage.objects.all()
-        print(query4)
-        return render(request,"index.html",{'myobj':form, 'mylogin':form1, 'query1':query1, "slider" : query2, 'social_icons':query3, 'footerimg':query4})
+        query5 = Rating.objects.order_by('avg')[:4]
+
+        return render(request,"index.html",{'myobj':form, 'mylogin':form1, 'query1':query1, "slider" : query2, 'social_icons':query3, 'footerimg':query4 , 'rate': query5})
 
     def linkmail(request):
         token=request.GET["token"]
@@ -64,7 +66,7 @@ class Home(View):
                     token= account_activation_token._make_hash_value(u1,timestamp)
                     u1.token=token
                     msg="http://127.0.0.1:8000/email/?token="+token+"email="+mail
-                    send_mail("please confirm your email", msg, 'jaimoljoseph.cst@gmail.com', [mail], fail_silently=False)
+                    #send_mail("please confirm your email", msg, 'jaimoljoseph.cst@gmail.com', [mail], fail_silently=False)
                     u1.save()
                     dict1["status"]=1
 
@@ -91,6 +93,7 @@ class Login(View):
             password = form1.cleaned_data['password']
             try:
                 u2=Reeluser.objects.get(username=username)
+
                 user=u2.username
                 check_pass=u2.password
                 auth1=authenticate(request, username=username, password=password)
@@ -121,74 +124,128 @@ class Login(View):
 class Listitems(View):
 
     def get(self, request):
+        form = Signup()
+        form1 = Loginform()
         queryset = Receipe.objects.order_by('-id')
         paginator = Paginator(queryset, 6)
         page = request.GET.get('page')
         recipes = paginator.get_page(page)
-
+        categories = Receipe.objects.all().values_list('category', flat=True)
         query3 = SocialLinks.objects.all()
         query4 = FooterImage.objects.all()
-        return render(request, "recipes.html", {'recipes':recipes,'social_icons':query3, 'footerimg': query4})
+        query5 = Rating.objects.all()
+
+        return render(request, "recipes.html", {'myobj':form, 'mylogin':form1,'recipes':recipes,'social_icons':query3, 'footerimg': query4, 'categories':categories, 'rate' : query5})
 
     def post(self, request):
+        dict10={}
+        categories = Receipe.objects.all().values_list('category', flat=True)
         type= request.POST['type']
         name = request.POST['name']
         category = request.POST['category']
+        print("-----------------",type,category,name)
+        r1 = Receipe.objects.all()
         query_recipe = Receipe.objects.filter(Q(category__contains=category)).filter(Q(type__contains=type)).filter(Q(receipe_name__contains=name))
-        print(query_recipe)
-        print("query------------------------------", query_recipe)
-        return render(request,"recipes.html", {"recipes":query_recipe})
+        print("query of receipe --====------------------------------", query_recipe)
+
+        return render(request,"recipes.html", {"recipes":query_recipe, 'categories':categories})
 
 
 
 
 class Details(DetailView):
     model = Receipe
+    queryset= Receipe.objects.all()
+    form = Signup()
+    form1 = Loginform()
     template_name = "recipe-single.html"
     context_object_name = "view"
+
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['category'] = Receipe.objects.all().values_list('category', flat=True)
+        data['comments'] = Comments.objects.all()
+        data['count'] = Comments.objects.all().count()
+
+        return data
+
 
 
 
 
 class Comment(View):
 
-    # def get(self, request):
-    #     query3 = SocialLinks.objects.all()
-    #     return render(request, "recipe-single.html", {'icon' : query3})
-
     def post(self, request):
             dict6 = {}
-            name=request.POST['name']
+            num=0
+            name=request.user
+            remail = Reeluser.objects.get(first_name = name)
+            email = remail.email
+            print(name,email)
+            rate= request.POST['rate']
             idno=request.POST['id']
-            print("--------------->>>",idno)
-            email=request.POST['email']
+
+
+
             subject= request.POST['subject']
             message= request.POST['message']
             if (name != "" and email != "" and subject != "" and message != ""):
-                c1= Comments(name=name,subject=subject, email=email, msg=message,receipe_name_id=idno)
+                c1= Comments(name=name,subject=subject, email=email, msg=message,receipe_name_id=idno, rating=rate)
                 c1.save()
                 dict6["status"]=1
+
+                calc= Comments.objects.filter(receipe_name_id = idno)
+                count =  Comments.objects.filter(receipe_name_id = idno).count()
+                recipe = Receipe.objects.get(id = idno)
+                rimage = recipe. recipe_image
+                rname = recipe.receipe_name
+                print(rname, calc, count)
+                if(count==1):
+                    print("inside 1")
+                    rate= Rating(receipe_name =rname , total =rate, avg =rate, image = rimage)
+                    rate.save()
+
+                elif(count > 1):
+                    print("inside 2")
+                    r1 = Rating.objects.get(receipe_name = rname)
+                    total = r1.total
+                    total = total+int(rate)
+                    average = total/count
+                    r1.total = total
+                    r1.avg = average
+                    r1.save()
+
+
             else:
-                dict6["status"]=0
-            print("dict6-------------->>>", dict6)
-            jsondata=json.dumps(dict6)
+                dict6["status"] = 0
+            jsondata = json.dumps(dict6)
             return HttpResponse(jsondata, content_type="application/json")
+
+
+
 
 
 
 class About(View):
 
     def get(self, request):
+        form = Signup()
+        form1 = Loginform()
         link = SocialLinks.objects.all()
         query4 = FooterImage.objects.all()
-        return render(request, "about.html",{'links': link, 'footerimg': query4})
+        query5= Feature.objects.all()
+        query6= AboutUs.objects.all()
+        return render(request, "about.html",{'myobj': form, 'mylogin': form1,'links': link, 'footerimg': query4, 'feature':query5, 'aboutus': query6})
 
 class ContactView(View):
 
     def get(self, request):
+        form = Signup()
+        form1 = Loginform()
         link = SocialLinks.objects.all()
         query4 = FooterImage.objects.all()
-        return render(request, "contact.html", {'links': link, 'footerimg':query4 })
+        return render(request, "contact.html", {'myobj': form, 'mylogin': form1,'links': link, 'footerimg':query4 })
 
     def post(self, request):
         dict7={}
@@ -204,7 +261,7 @@ class ContactView(View):
             contact.contact_name = name
             contact.contact_subject = subject
             contact.save()
-           # send_mail(subject, message, [email], ['jaimoljoseph.cst@gmail.com'],fail_silently=False )
+            send_mail(subject, message, email, ['jaimoljoseph123456@gmail.com'],fail_silently=False )
             dict7["status"]=2
         else:
             dict7["status"]= 3

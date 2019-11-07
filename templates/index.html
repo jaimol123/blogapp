@@ -36,7 +36,7 @@
                                 else.</small>
                         </div>
 
-
+                         <h4 id="next"></h4>
                         <a aria-label="Basic example" class="btn-group" role="group">
                             <a href="{% provider_login_url 'facebook'  %}">
                                 <button class="btn btn-primary" type="button"><i class="fa fa-facebook fa-fw"></i> Login
@@ -44,23 +44,19 @@
                                 </button>
                             </a>
                             <a href="/accounts/google/login" id="google_login">
-                                <button class="btn btn-danger" type="button"><i class="fa fa-google fa-fw"></i> Login
-                                    with Google
-                                </button>
+                                <button class="btn btn-danger" type="button"><i class="fa fa-google fa-fw"></i> Login with Google</button>
                             </a>
-                            <button class="btn btn-success" id="apple" name="" type="submit" value="login"><i
-                                    class="fa fa-sign-in"></i> Login
-                            </button>
-                        </a>
+                            </a>
+                            <button class="btn btn-success" id="apple" name="" type="submit" value="login"><i class="fa fa-sign-in"></i> Login</button>
+
                     </form>
                 </div>
 
             </div>
 
         </div>
-
     </div>
-</div>
+
 
 </div>
 
@@ -88,9 +84,8 @@
 
 
                         <a aria-label="Basic example" class="btn-group" role="group">
-                            <button class="btn btn-danger" id="orange" name="" type="submit" value="login"><i
-                                    class="fa fa-sign-in"></i>SignUp
-                            </button>
+                            <h4 id="now"></h4>
+                            <button class="btn btn-danger" id="orange" name="" type="submit" value="login"><i class="fa fa-sign-in"></i>SignUp</button>
                         </a>
                     </form>
 
@@ -206,173 +201,189 @@
                             <h3>Top rated recipes</h3>
                         </div>
                         <ul class="sp-recipes-list">
+                                {% for rated in rate %}
                             <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/1.jpg' %}"></div>
+
+                                <div class="rl-thumb set-bg" data-setbg="{{rated.image.url}}"></div>
                                 <div class="rl-info">
                                     <span>March 14, 2018</span>
-                                    <h6>Italian pasta</h6>
+                                    <h6>{{rated.receipe_name}}</h6>
+
                                     <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
+                                        {% with ''|center:rated.avg as range %}
+                                        {% for _ in range %}
+                                             <i class="fa fa-star"></i>
+                                        {% endfor %}
+                                        {% endwith %}
+
+
+
+
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+
                                     </div>
                                 </div>
+
                             </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/2.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>French Onion Soup</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/3.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Homemade pasta</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/4.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Onion Soup Gratinee</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/4.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Feta Cheese Burgers</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                                     {% endfor %}
+                            </ul>
                     </div>
-                    <div class="col-lg-4 col-md-6 ftw-warp">
-                        <div class="section-title">
-                            <h3>Most liked recipes</h3>
-                        </div>
-                        <ul class="sp-recipes-list">
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/6.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Traditional Food</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/7.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Baked Salmon</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/8.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Deep Fried Fish</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/9.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Raw Tomato Soup</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/10.jpg' %}"></div>
-                                <div class="rl-info">
-                                    <span>March 14, 2018</span>
-                                    <h6>Vegan Food</h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star is-fade"></i>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="sp-blog-item">
-                            <div class="blog-thubm">
-                                <img alt="" src="img/blog/1.jpg">
-                                <div class="blog-date">
-                                    <span>May 04, 2018</span>
-                                </div>
-                            </div>
-                            <div class="blog-text">
-                                <h5>Italian restaurant Review</h5>
-                                <span>By Maria Williams</span>
-                                <p>Donec quam felis, ultricies nec, pellente sque eu, pretium quis, sem. Nulla conseq
-                                    uat massa quis enim. </p>
-                                <a class="comment" href="#">2 Comments</a>
-                                <a class="readmore" href="#"><i class="fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
+
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/2.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>French Onion Soup</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/3.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Homemade pasta</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/4.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Onion Soup Gratinee</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/4.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Feta Cheese Burgers</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+
+<!--                    <div class="col-lg-4 col-md-6 ftw-warp">-->
+<!--                        <div class="section-title">-->
+<!--                            <h3>Most liked recipes</h3>-->
+<!--                        </div>-->
+<!--                        <ul class="sp-recipes-list">-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/6.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Traditional Food</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/7.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Baked Salmon</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/8.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Deep Fried Fish</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/9.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Raw Tomato Soup</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <div class="rl-thumb set-bg" data-setbg="{% static 'img/thumb/10.jpg' %}"></div>-->
+<!--                                <div class="rl-info">-->
+<!--                                    <span>March 14, 2018</span>-->
+<!--                                    <h6>Vegan Food</h6>-->
+<!--                                    <div class="rating">-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star"></i>-->
+<!--                                        <i class="fa fa-star is-fade"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4">-->
+<!--                        <div class="sp-blog-item">-->
+<!--                            <div class="blog-thubm">-->
+<!--                                <img alt="" src="img/blog/1.jpg">-->
+<!--                                <div class="blog-date">-->
+<!--                                    <span>May 04, 2018</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="blog-text">-->
+<!--                                <h5>Italian restaurant Review</h5>-->
+<!--                                <span>By Maria Williams</span>-->
+<!--                                <p>Donec quam felis, ultricies nec, pellente sque eu, pretium quis, sem. Nulla conseq-->
+<!--                                    uat massa quis enim. </p>-->
+<!--                                <a class="comment" href="#">2 Comments</a>-->
+<!--                                <a class="readmore" href="#"><i class="fa fa-angle-right"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </section>
@@ -467,17 +478,21 @@
 		{
 			if(data.val1==1)
 			{
-			alert("login success");
+	         document.getElementById("next").innerHTML = "signin successful!";
 			window.location.replace("/")
 			}
 			else if(data.val1==0)
 			{
-			alert("username/password wrong")
+			 document.getElementById("next").innerHTML = "wrong username/password!";
+			}
+			else if(data.val1 ==5)
+			{
+			 document.getElementById("next").innerHTML = "empty fields not allowed!";
 			}
 		},
 		error:function()
 		{
-		alert("login failed");
+		 document.getElementById("next").innerHTML = "error!";
 		}
 });
 });

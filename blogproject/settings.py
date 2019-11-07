@@ -45,15 +45,22 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
-    'ckeditor'
+    'ckeditor',
+    'django_google_maps'
 
     ]
 
+GEOPOSITION_GOOGLE_MAPS_API_KEY= 'AIzaSyCyxiu7avwmP0EuErK6cnB3jBB1SvGLQRA'
+GOOGLE_MAPS_API_KEY= 'AIzaSyCyxiu7avwmP0EuErK6cnB3jBB1SvGLQRA'
+
+
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.ionos.com'
-EMAIL_HOST_USER = 'albin@cloudaven.com'
-EMAIL_HOST_PASSWORD = 'Albin@123'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'jaimol123456@gmail.com'
+EMAIL_HOST_PASSWORD = 'jaimol123joseph'
 EMAIL_PORT = 587
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 AUTH_USER_MODEL = 'blogapp.Reeluser'
 
@@ -138,7 +145,17 @@ SOCIALACCOUNT_PROVIDERS = \
     }
      }
 
-
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    }
+}
 
 
 
@@ -216,11 +233,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-STATIC_URL = '/assets/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "staticfiles"),
 ]
 
 MEDIA_URL='/media/'

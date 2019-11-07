@@ -19,11 +19,15 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/animate.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
-    <!--[if lt IE 9]>
+
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
+
+
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> <!--this the first jquery to be loaded always in a page-->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
 </head>
@@ -36,6 +40,7 @@
     <header class="header-section">
         <div class="header-top">
          <div class="container">
+
                  {% block socialmedia_links %}
                  {% endblock socialmedia_links %}
                 <div class="user-panel">
@@ -67,7 +72,7 @@
                 <i class="fa fa-bars"></i>
             </div>
             <div class="header-search">
-                <a href="#"><i class="fa fa-search"></i></a>
+                <a href="{% url 'list' %}"><i class="fa fa-search"></i></a>
             </div>
 
             <ul class="main-menu">
@@ -92,11 +97,12 @@
 {% endblock %}
 
 	<!--Footer section  -->
-
+        <footer class="footer-section set-bg" data-setbg="{% static 'img/footer-bg.jpg' %}">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="footer-logo">
+                         <a href="/" class="site-logo">
                         <img src="{% static 'img/logo.png' %}" alt="">
                     </div>
                     <div class="footer-social">

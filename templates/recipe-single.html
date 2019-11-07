@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
  {% block content %}
+{% load socialaccount %}
 
 	<!-- Hero section -->
 	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
@@ -23,24 +24,125 @@
 
 
 
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="login11" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+
+                </div>
+                <div class="modal-body">
+
+                    <form id="loginform" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+
+                            {{mylogin.as_p}}
+
+                            <small class="form-text text-muted">We'll never share your username with anyone else.</small>
+                        </div>
+
+                         <h4 id="next"></h4>
+                        <a aria-label="Basic example" class="btn-group" role="group">
+                            <a href="{% provider_login_url 'facebook'  %}">
+                                <button class="btn btn-primary" type="button"><i class="fa fa-facebook fa-fw"></i> Login with Facebook</button>
+                            </a>
+                            <a href="/accounts/google/login" id="google_login">
+                                <button class="btn btn-danger" type="button"><i class="fa fa-google fa-fw"></i> Login with Google</button>
+                            </a>
+						</a>
+                            <button class="btn btn-success" id="apple" name="" type="submit" value="login"><i class="fa fa-sign-in"></i> Login</button>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="container">
+
+    <div class="modal fade" id="sign" role="dialog">
+        <!--					<form class="modal-dialog">-->
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Signup</h4>
+                    <button class="close" data-dismiss="modal" type="button">&times</button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="loginsubmit" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{myobj.as_p}}
+                        </div>
+
+
+                        <a aria-label="Basic example" class="btn-group" role="group">
+                            <h4 id="now"></h4>
+                            <button class="btn btn-danger" id="orange" name="" type="submit" value="login"><i class="fa fa-sign-in"></i>SignUp</button>
+                        </a>
+                    </form>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 <!--	 Search section-->
 	<div class="search-form-section">
 		<div class="sf-warp">
 			<div class="container">
-				<form class="big-search-form">
-					<select>
-						<option>All Recipes Categories</option>
-						<option>Pizza</option>
-						<option>Salads</option>
-						<option>Desserts</option>
-						<option>Side Dishes</option>
-					</select>
-					<select>
+				<form class="big-search-form" action="{% url 'list' %}" method="post">
+					{% csrf_token %}
+					<select name="type">
+						<option selected="selected"></option>
 						<option>Breakfast</option>
 						<option>Lunch</option>
 						<option>Dinner</option>
 					</select>
-					<input type="text" placeholder="Search Receipies">
+
+					<select name="category">
+
+						{% for item in category%}
+						<option selected="selected"></option>
+						<option>{{item}}</option>
+							{% endfor %}
+
+					</select>
+
+					<input type="text"  name= 'name' placeholder="Search Receipies">
 					<button class="bsf-btn">Search</button>
 				</form>
 			</div>
@@ -51,7 +153,7 @@
 
 	<!-- Recipe big view -->
 	<div class="recipe-view-section">
-		<div class="rv-warp set-bg" data-setbg="{{ view.recipe_image.url}}"></div>
+		<div class="rv-warp set-bg" data-setbg="{{ view.recipe_image.url}}" alt="no result found"></div>
 	</div>
 
 	<!-- Recipe details section -->
@@ -62,14 +164,27 @@
 					<span>For Begginers</span>
 				</div>
 				<h2>{{view.receipe_name}}</h2>
-				<div class="recipe-date">May 15, 2018</div>
-				<div class="rating">
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star is-fade"></i>
-				</div>
+				<div class="recipe-date">{{view.pub_date}}</div>
+
+				<!-- star rating section-->
+<!--				<div class="container">-->
+<!--				  <div class="row">-->
+<!--					<div class="col-lg-12">-->
+<!--					  <div class="star-rating">-->
+<!--						<span class="fa fa-star-o" data-rating="1"></span>-->
+<!--						<span class="fa fa-star-o" data-rating="2"></span>-->
+<!--						<span class="fa fa-star-o" data-rating="3"></span>-->
+<!--						<span class="fa fa-star-o" data-rating="4"></span>-->
+<!--						<span class="fa fa-star-o" data-rating="5"></span>-->
+<!--					<input type="hidden" name="rate" class="rating-value" value=" ">-->
+<!--						  -->
+<!--					  </div>-->
+<!--					</div>-->
+<!--				  </div>-->
+
+
+
+
 			</div>
 			<div class="row">
 				<div class="col-lg-5">
@@ -109,49 +224,170 @@
 				</div>
 			</div>
 		</div>
+		</div>
 	</section>
 	<!-- Recipe details section end -->
 
 
-	<!-- Comment section -->
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default widget">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-comment"></span>
+                <h3 class="panel-title">
+                    Recent Comments</h3>
+              <span class="label label-info">{{count}}</span>
+            </div>
+            <div class="panel-body">
+				{% for coment in comments %}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-2 col-md-1">
+                                <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" /></div>
+                            <div class="col-xs-10 col-md-11">
+                                <div>
+
+                                    <div class="mic-info">
+
+                                        By: <a href="#">{{coment.name}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="comment-text">{{coment.msg}}</div>
+
+                            </div>
+                        </div>
+
+
+
+					 </li>
+
+               </ul>
+
+				{% endfor %}
+<!--				<a href="#" class="btn btn-primary btn-sm btn-block" role="button"> More</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Comment section -->
+
 	<section class="comment-section spad pt-0" >
+		{% if request.user.is_authenticated %}
 		<div class="container">
 			<h4>Leave a comment</h4>
 			<form class="comment-form" id="commentform" method="post">
 				{% csrf_token %}
 				<div class="row">
 					<div class="col-md-6">
-						<input type="text" placeholder="Name" name="name" value="">
 
+						<input type="hidden" placeholder="" name="id" value="{{view.id}}">
 					</div>
 
-					<div class="col-md-6">
-						<input type="text" placeholder="E-mail" name="email" value="">
-					</div>
+<!--					<div class="col-md-6">-->
+<!--						<input type="text" placeholder="E-mail" name="email" value="">-->
+<!--					</div>-->
+
 					<div class="col-md-12">
 						<input type="text" placeholder="Subject" name="subject" value="">
 						<textarea placeholder="Message" name="message" value=""></textarea>
+						<div class="col-lg-12">
+					  <div class="star-rating">
+						<span class="fa fa-star-o" data-rating="1"></span>
+						<span class="fa fa-star-o" data-rating="2"></span>
+						<span class="fa fa-star-o" data-rating="3"></span>
+						<span class="fa fa-star-o" data-rating="4"></span>
+						<span class="fa fa-star-o" data-rating="5"></span>
+						  <input type="hidden" name="rate" class="rating-value" value=" ">
+					  </div>
+							<h3 id="coment"> </h3>
 						<button class="site-btn" id="commentsubmit">Send</button>
 
 					</div>
 				</div>
+
+				</div>
 			</form>
 		</div>
+		{% endif %}
 	</section>
 	<!-- Comment section -->
 
 
-	<!-- Gallery section -->
-	<div class="gallery">
-		<div class="gallery-slider owl-carousel">
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/1.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/2.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/3.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/4.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/5.jpg' %}"></div>
-			<div class="gs-item set-bg" data-setbg="{% static 'img/instagram/6.jpg' %}"></div>
-		</div>
-	</div>
+<script>
+var $star_rating = $('.star-rating .fa');
+
+var SetRatingStar = function() {
+  return $star_rating.each(function() {
+    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+      return $(this).removeClass('fa-star-o').addClass('fa-star');
+    } else {
+      return $(this).removeClass('fa-star').addClass('fa-star-o');
+    }
+  });
+};
+
+$star_rating.on('click', function() {
+  $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+  return SetRatingStar();
+});
+
+SetRatingStar();
+$(document).ready(function() {
+
+});
+
+</script>
+
+<script>
+	$("#apple").click(function(e){
+	e.preventDefault();
+	$.ajax({
+	url:"{% url 'login' %}",
+	type:"post",
+	datatype:"json",
+	data:$("#loginform").serialize(),
+	success:function(data)
+		{
+			if(data.val1==1)
+			{
+	         document.getElementById("next").innerHTML = "signin successful!";
+			window.location.replace("/")
+			}
+			else if(data.val1==0)
+			{
+			 document.getElementById("next").innerHTML = "wrong username/password!";
+			}
+			else if(data.val1 ==5)
+			{
+			 document.getElementById("next").innerHTML = "empty fields not allowed!";
+			}
+		},
+		error:function()
+		{
+		 document.getElementById("next").innerHTML = "error!";
+		}
+});
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
 	{% endblock %}
 
 	<script type="text/javascript" src="{% static 'js/ckeditor/ckeditor.js' %}"></script>
