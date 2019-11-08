@@ -48,6 +48,7 @@ class Loginform(forms.Form):
     password = forms.CharField(label="PASSWORD:", widget=forms.PasswordInput(attrs={'class': 'form-control'}), required=True)
 
 
+
     class Meta:
         model = Reeluser;
 

@@ -106,7 +106,8 @@ class Login(View):
                 dict2["val1"]=2
                 print("exception in login function",e)
         else:
-            dict2["val1"]=5
+            dict2["val1"] = 3
+
 
         jsondata=json.dumps(dict2)
         return HttpResponse(jsondata, content_type="application/json")
@@ -165,7 +166,7 @@ class Details(DetailView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['category'] = Receipe.objects.all().values_list('category', flat=True)
-        data['comments'] = Comments.objects.all()
+        data['comments'] = Comments.objects.all()[:5]
         data['count'] = Comments.objects.all().count()
 
         return data

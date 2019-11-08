@@ -3,6 +3,8 @@ import datetime
 from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
 from django_google_maps import fields as map_fields
+from django.utils.safestring import mark_safe
+
 
 
 class Receipe(models.Model):
@@ -16,7 +18,7 @@ class Receipe(models.Model):
 
     class Meta:
             db_table="receipe"
-            verbose_name_plural= "Receipe"
+            verbose_name= "Receipe"
             ordering=['pub_date']
 
 
@@ -25,7 +27,7 @@ class Reeluser(AbstractUser):
     token=models.CharField(max_length=255, default="111", null=True)
     class Meta:
         db_table= "reeluser"
-        verbose_name_plural= "Reeluser"
+        verbose_name= "Reeluser"
 
 class Ingredients(models.Model):
     receipe_name=  models.ForeignKey(Receipe, on_delete= models.CASCADE, related_name="food", null=True, blank=True)
@@ -42,6 +44,7 @@ class Comments(models.Model):
     subject= models.CharField(max_length= 25, null=True, blank=True)
     msg= models.TextField(max_length=255, null=True, blank=True)
     email= models.EmailField(max_length= 25, null= True, unique=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True , blank = True, null = True)
     rating= models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -57,7 +60,7 @@ class Slider(models.Model):
 
     class Meta:
         db_table = "slider"
-        verbose_name_plural= "Slider"
+        verbose_name= "Slider"
 
 
 
@@ -73,11 +76,20 @@ class Contact(models.Model):
     contact_name = models.CharField(max_length=25, null=True, blank=True)
     contact_subject = models.CharField(max_length=25, null=True, blank=True)
     contact_msg = models.TextField(max_length=255, null=True, blank=True)
-    contact_email = models.EmailField(max_length=25, null=True, unique=True, blank=True)
+    contact_email = models.EmailField(max_length=255, null=True,blank=True)
 
     class Meta:
         db_table="contact"
-        verbose_name_plural="contact"
+        verbose_name="contact"
+
+class Details(models.Model):
+    address = models.CharField(max_length=255, null=True,blank=True)
+    phone_number = models.IntegerField(null=True,blank=True)
+
+    class Meta:
+        db_table = "details"
+        verbose_name = "detail"
+
 
 
 class PlaceLocation(models.Model):
@@ -95,6 +107,14 @@ class FooterImage(models.Model):
         db_table="footerimage"
         verbose_name_plural="FooterImage"
 
+    # def image_tag(self):
+    #
+    #     return mark_safe('<img src="{image}" width="150" height="150" />'.format(self.url()))
+    #
+    # image_tag.short_description = 'Image'
+
+
+
 
 class Feature(models.Model):
     text1=RichTextField(null= True, blank=True)
@@ -105,10 +125,14 @@ class Feature(models.Model):
 
     class Meta:
         db_table="feature"
-        verbose_name_plural="feature"
+        verbose_name="feature"
+
+    def __str__(self):
+        return self.heading
 
 
 class AboutUs(models.Model):
+    heading = models.ForeignKey(Feature, on_delete=models.CASCADE, related_name="about", null=True, blank=True)
     text=models.CharField(max_length=25, null=True, blank=True)
     numbers= models.IntegerField(null=True, blank=True)
     image=models.FileField(null=True, blank=True)

@@ -228,54 +228,60 @@
 	</section>
 	<!-- Recipe details section end -->
 
-
-
-
-
-
-<div class="container">
+  <div class="container">
     <div class="row">
         <div class="panel panel-default widget">
             <div class="panel-heading">
                 <span class="glyphicon glyphicon-comment"></span>
                 <h3 class="panel-title">
                     Recent Comments</h3>
-              <span class="label label-info">{{count}}</span>
+                <span class="label label-info">
+                    78</span>
             </div>
             <div class="panel-body">
-				{% for coment in comments %}
                 <ul class="list-group">
+					{% for coment in comments %}
+
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-2 col-md-1">
-                                <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" /></div>
+
                             <div class="col-xs-10 col-md-11">
                                 <div>
 
                                     <div class="mic-info">
-
-                                        By: <a href="#">{{coment.name}}</a>
+                                        By: <a href="#">{{coment.name}}</a> on {{coment.date}}
                                     </div>
                                 </div>
-
-                                <div class="comment-text">{{coment.msg}}</div>
+                                <div class="comment-text">
+                                    {{coment.msg}}
+                                </div>
 
                             </div>
                         </div>
+                    </li>
+					{% endfor %}
+                </ul>
 
-
-
-					 </li>
-
-               </ul>
-
-				{% endfor %}
-<!--				<a href="#" class="btn btn-primary btn-sm btn-block" role="button"> More</a>-->
             </div>
         </div>
     </div>
 </div>
 
+
+
+<style>
+body { padding-top:30px; }
+.widget .panel-body { padding:0px; }
+.widget .list-group { margin-bottom: 0; }
+.widget .panel-title { display:inline }
+.widget .label-info { float: right; }
+.widget li.list-group-item {border-radius: 0;border: 0;border-top: 1px solid #ddd;}
+.widget li.list-group-item:hover { background-color: rgba(86,61,124,.1); }
+.widget .mic-info { color: #666666;font-size: 11px; }
+.widget .action { margin-top:5px; }
+.widget .comment-text { font-size: 12px; }
+.widget .btn-block { border-top-left-radius:0px;border-top-right-radius:0px; }
+</style>
 
 <!-- Comment section -->
 
@@ -319,6 +325,13 @@
 		{% endif %}
 	</section>
 	<!-- Comment section -->
+ <style>
+ .star-rating {
+ line-height:32px;
+ font-size:2.25em;
+}
+.star-rating .fa-star{color: orange;}
+</style>
 
 
 <script>
