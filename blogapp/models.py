@@ -89,6 +89,8 @@ class Details(models.Model):
     class Meta:
         db_table = "details"
         verbose_name = "detail"
+    def __str__(self):
+         return  self.phone_number
 
 
 
@@ -122,6 +124,7 @@ class Feature(models.Model):
     heading=models.CharField(max_length=25, null=True, blank=True)
     image1=models.FileField(null=True, blank=True)
     image2=models.FileField(null=True, blank=True)
+    heading2 = models.CharField(max_length = 255, null = True, blank = True)
 
     class Meta:
         db_table="feature"
@@ -139,7 +142,16 @@ class AboutUs(models.Model):
 
     class Meta:
         db_table="aboutus"
-        verbose_name_plural="AboutUs"
+        verbose_name_plural = 'AboutUs'
+
+class Newsletter(models.Model):
+    heading = models.ForeignKey(Feature, on_delete=models.CASCADE, related_name="news", null=True, blank=True)
+    mail = models.EmailField(blank= True, null = True)
+
+    class Meta:
+        db_table="newsletter"
+        verbose_name_plural = 'Newsletter'
+
 
 class Rating(models.Model):
     avg = models.IntegerField(null=True, blank=True)

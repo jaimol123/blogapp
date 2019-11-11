@@ -1,5 +1,5 @@
 from django import forms
-from . models import Reeluser,Receipe
+from . models import Reeluser,Receipe, Newsletter,Comments
 from django.core.exceptions import ValidationError
 
 class Signup(forms.Form):
@@ -51,6 +51,28 @@ class Loginform(forms.Form):
 
     class Meta:
         model = Reeluser;
+
+class Newsletters(forms.Form):
+    email = forms.EmailField(label="email", widget=forms.TextInput(attrs={'class': "newsletter-form"}), required=True)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Newsletter.objects.filter(mail=email):
+            raise forms.ValidationError("email already exist !!!!")
+        if( '@' not in email):
+            raise forms.ValidationError("enter a valid email id !!!!")
+        return email
+
+    class Meta:
+        model = Newsletter;
+
+
+class Reviews(forms.Form):
+    subject = forms.CharField(label = 'subject', widget=forms.TextInput(attrs={'class':"col-md-12"}), required=True )
+    message = forms.CharField(label = 'message', widget=forms.Textarea(attrs={'class':"col-md-12"}), required=True )
+
+    class Meta:
+        model = Comments;
 
 
 

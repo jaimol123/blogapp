@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.views.generic import ListView,TemplateView,View
 from django.http import HttpResponse,request
 from django.views.generic.detail import DetailView
-from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage,Feature, AboutUs, Rating
-from . forms import Signup,Loginform
+from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage,Feature, AboutUs, Rating, Newsletter
+from . forms import Signup,Loginform, Newsletters,Reviews
 import json
 from django.contrib.auth.models import User,Group
 from django.contrib.auth import authenticate, login,logout
@@ -168,6 +168,7 @@ class Details(DetailView):
         data['category'] = Receipe.objects.all().values_list('category', flat=True)
         data['comments'] = Comments.objects.all()[:5]
         data['count'] = Comments.objects.all().count()
+        data['reviews'] = Reviews()
 
         return data
 
@@ -231,13 +232,29 @@ class Comment(View):
 class About(View):
 
     def get(self, request):
+        new = Newsletters()
         form = Signup()
         form1 = Loginform()
         link = SocialLinks.objects.all()
         query4 = FooterImage.objects.all()
         query5= Feature.objects.all()
         query6= AboutUs.objects.all()
-        return render(request, "about.html",{'myobj': form, 'mylogin': form1,'links': link, 'footerimg': query4, 'feature':query5, 'aboutus': query6})
+        return render(request, "about.html",{'myobj': form, 'mylogin': form1,'links': link, 'footerimg': query4, 'feature':query5, 'aboutus': query6, 'newsletter' : new })
+
+    def post(self, request):
+        dict15 = {}
+        new = Newsletters(request.POST)
+        if new.is_valid() :
+            mail = new.cleaned_data['email']
+            print("mail---", mail)
+            n1 = Newsletter(mail=mail)
+            n1.save()
+            dict15['status'] = 1
+        else:
+            print(new.errors, 'ddddddddddddddd')
+            dict15['status'] = new.errors
+        jsondata = json.dumps(dict15)
+        return HttpResponse(jsondata , content_type="application/json")
 
 class ContactView(View):
 

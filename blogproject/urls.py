@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin', admin.site.urls),
     path(r'', include('blogapp.urls')),
     path(r'accounts/', include('allauth.urls')),
+    path(r'pages/', include('django.contrib.flatpages.urls')),
 
 
 

@@ -113,32 +113,6 @@
 
 
 
-	<!-- Search section -->
-<!--	<div class="search-form-section">-->
-<!--		<div class="sf-warp">-->
-<!--			<div class="container">-->
-<!--				<form class="big-search-form">-->
-<!--					<select>-->
-<!--						<option>All Recipes Categories</option>-->
-<!--						<option>Pizza</option>-->
-<!--						<option>Salads</option>-->
-<!--						<option>Desserts</option>-->
-<!--						<option>Side Dishes</option>-->
-<!--					</select>-->
-<!--					<select>-->
-<!--						<option>All Ingredients</option>-->
-<!--						<option>Breakfast</option>-->
-<!--						<option>Lunch</option>-->
-<!--						<option>Dinner</option>-->
-<!--					</select>-->
-<!--					<input type="text" placeholder="Search Receipies">-->
-<!--					<button class="bsf-btn">Search</button>-->
-<!--				</form>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
-
-
 
 	<!-- About section -->
 	<section class="about-section spad">
@@ -178,27 +152,7 @@
 
 					</div>
 					{% endfor %}
-<!--					<div class="col-lg-3 col-sm-6 fact-item">-->
-<!--						<div class="fact-icon">-->
-<!--							<img src="{% static 'img/icon/2.png' %}" alt="">-->
-<!--						</div>-->
-<!--						<h2>25</h2>-->
-<!--						<p>Wine pairings</p>-->
-<!--					</div>-->
-<!--					<div class="col-lg-3 col-sm-6 fact-item">-->
-<!--						<div class="fact-icon">-->
-<!--							<img src="{% static 'img/icon/3.png' %}" alt="">-->
-<!--						</div>-->
-<!--						<h2>471</h2>-->
-<!--						<p>Meat receipies</p>-->
-<!--					</div>-->
-<!--					<div class="col-lg-3 col-sm-6 fact-item">-->
-<!--						<div class="fact-icon">-->
-<!--							<img src="{% static 'img/icon/4.png' %}" alt="">-->
-<!--						</div>-->
-<!--						<h2>326</h2>-->
-<!--						<p>Desert receipies</p>-->
-<!--					</div>-->
+
 				</div>
 			</div>
 		</div>
@@ -213,9 +167,12 @@
 
 				<div class="col-lg-6 nl-text">
 					<h2>Subscribe to our newsletter</h2>
-					<form class="newsletter-form">
-						<input type="text" placeholder="Your E-mail">
-						<button class="site-btn">Subscribe</button>
+					<form class="newsletter-form" id="newsform">
+						{{newsletter}}
+
+						<span id="error"></span>
+						<button class="site-btn" id="newssubmit">Subscribe</button>
+
 					</form>
 					{% for feature in feature%}
 					<p>{{feature.text2 | safe}}</p>
@@ -229,7 +186,7 @@
 	</section>
 	<!-- Newsletter section end -->
 <script>
-	$("#apple").click(function(e){
+	$("#apple").click(function(e){-->
 	e.preventDefault();
 	$.ajax({
 	url:"{% url 'login' %}",
@@ -238,23 +195,87 @@
 	data:$("#loginform").serialize(),
 	success:function(data)
 		{
-			if(data.val1==1)
+			if(data.status==1)
 			{
-	         document.getElementById("next").innerHTML = "signin successful!";
+	         document.getElementById("news").innerHTML = "signin successful!";
 			window.location.replace("/")
 			}
-			else if(data.val1==0)
-			{
-			 document.getElementById("next").innerHTML = "wrong username/password!";
-			}
-			else if(data.val1 ==5)
-			{
-			 document.getElementById("next").innerHTML = "empty fields not allowed!";
-			}
-		},
+			else{
+			 $("#loginform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
+                  {
+
+                            var current = $(this).parent();
+                            var current_name = $(this).attr('name');
+                            $.each(data.key, function (index, value)
+                            {
+                             if (current_name == index)
+                             {
+
+                                   current.after("<div class='error'></div>");
+
+                                   current.next().html(value);
+
+
+                                    }
+                                });
+                              });
+
+
+		}
 		error:function()
 		{
 		 document.getElementById("next").innerHTML = "error!";
+		}
+});
+});
+
+</script>
+
+ <script>
+	$("#newssubmit").click(function(e){
+	console.log($("#newsform").serialize());
+
+	e.preventDefault();
+	$.ajax({
+	url:"/about/",
+	type:"post",
+	datatype:"json",
+	data:$("#newsform").serialize(),
+
+	success:function(data)
+		{
+
+			if(data.status==1)
+			{
+
+	         document.getElementById("error").innerHTML = "subscribed!!!";
+
+			}
+			else{
+
+
+                 $("#newsform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
+                  {
+
+                          var current = $(this).parent();
+                            var current_name = $(this).attr('name');
+
+                           $.each(data.status, function (index, value)
+                           {
+                           $('#error').html(value);
+
+							 });
+                             });
+            }
+
+
+
+
+
+		},
+		error:function()
+		{
+		 alert("error");
 		}
 });
 });

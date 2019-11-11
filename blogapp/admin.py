@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Reeluser,Receipe,Ingredients,Comments,Slider,SocialLinks,Contact,FooterImage,Feature,AboutUs,PlaceLocation,Rating,Details
+from . models import Reeluser,Receipe,Ingredients,Comments,Slider,SocialLinks,Contact,FooterImage,Feature,PlaceLocation,Rating,Details, AboutUs, Newsletter
 # from django_google_maps import widgets as map_widgets
 # from django_google_maps import fields as map_fields
 from django.conf import settings
@@ -54,12 +54,18 @@ class AboutUsAdmin(admin.TabularInline):
     model = AboutUs
     extra = 3
 
+
+
+class AboutUsAdmin(admin.TabularInline):
+
+    model = AboutUs
+    extra = 3
+
+
 class FeatureAdmin(admin.ModelAdmin):
 
-
-
     fields = ('text1', 'text2','heading','image1', 'image2')
-    inlines = [AboutUsAdmin]
+    inlines = [AboutUsAdmin,]
 
 
 
@@ -94,10 +100,11 @@ class FooterAdmin(admin.ModelAdmin):
     # readonly_fields = ['image_tag',]
 
 class DetailAdmin(admin.ModelAdmin):
-    list_display = ('address', ' phone_number')
+    list_display = ('address',)
 
 
 admin.site.register(Rating, RatingAdmin)
+admin.site.register(Newsletter,admin.ModelAdmin )
 admin.site.register(PlaceLocation,PlaceLocationAdmin )
 admin.site.register(Feature, FeatureAdmin)
 admin.site.register(Contact, ContactAdmin)

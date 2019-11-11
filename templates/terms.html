@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load socialaccount %}
+
+{% block content %}
+
+<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %} ">
+		<div class="container">
+			<h2>{{flatpage.title}}</h2>
+		</div>
+	</section>
+
+
+        {% block socialmedia_links %}
+                {% for icon in social_icons %}
+                       <div class="header-social">
+                          <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}"></i></a>
+		                </div>
+	            {% endfor %}
+        {% endblock socialmedia_links %}
+
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="login11" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+
+                </div>
+                <div class="modal-body">
+
+                    <form id="loginform" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+
+                            {{mylogin.as_p}}
+
+                            <small class="form-text text-muted">We'll never share your username with anyone
+                                else.</small>
+                        </div>
+
+                         <h4 id="next"></h4>
+                        <a aria-label="Basic example" class="btn-group" role="group">
+                            <a href="{% provider_login_url 'facebook'  %}">
+                                <button class="btn btn-primary" type="button"><i class="fa fa-facebook fa-fw"></i> Login
+                                    with Facebook
+                                </button>
+                            </a>
+                            <a href="/accounts/google/login" id="google_login">
+                                <button class="btn btn-danger" type="button"><i class="fa fa-google fa-fw"></i> Login with Google</button>
+                            </a>
+                            </a>
+                            <button class="btn btn-success" id="apple" name="" type="submit" value="login"><i class="fa fa-sign-in"></i> Login</button>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="container">
+
+    <div class="modal fade" id="sign" role="dialog">
+        <!--					<form class="modal-dialog">-->
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Signup</h4>
+                    <button class="close" data-dismiss="modal" type="button">&times</button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="loginsubmit" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{myobj.as_p}}
+                        </div>
+
+
+                        <a aria-label="Basic example" class="btn-group" role="group">
+                            <h4 id="now"></h4>
+                            <button class="btn btn-danger" id="orange" name="" type="submit" value="login"><i class="fa fa-sign-in"></i>SignUp</button>
+                        </a>
+                    </form>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<section class="about-section spad">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-lg-6 about-text">
+<!--					<h2>{{flatpage.title}}</h2>-->
+					<p>{{flatpage.content}}</p>
+<!--					<div class="site-btn">Read more</div>-->
+				</div>
+
+
+				<div class="col-lg-6">
+					<img src="{% static 'img/instagram/6.jpg' %}" alt=" no result found">
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+<!-- Review sec<tion end -->
+
+<!-- Gallery section -->
+<div class="gallery">
+
+    <div class="gallery-slider owl-carousel">
+        {% for img in footerimg %}
+       <div class="gs-item set-bg" data-setbg="{{img.image.url}}"></div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+
+
+<script>
+	$("#apple").click(function(e){
+	e.preventDefault();
+	$.ajax({
+	url:"{% url 'login' %}",
+	type:"post",
+	datatype:"json",
+	data:$("#loginform").serialize(),
+	success:function(data)
+		{
+			if(data.val1==1)
+			{
+	         document.getElementById("next").innerHTML = "signin successful!";
+			window.location.replace("/")
+			}
+			else if(data.val1==0)
+			{
+			 document.getElementById("next").innerHTML = "wrong username/password!";
+			}
+			else if(data.val1 ==5)
+			{
+			 document.getElementById("next").innerHTML = "empty fields not allowed!";
+			}
+		},
+		error:function()
+		{
+		 document.getElementById("next").innerHTML = "error!";
+		}
+});
+});
+
+</script>
+{% endblock %}
+
+  {% block socialmedia_footer %}
+{% for icon in social_icons %}
+	   <div class="header-social">
+		  <a href="{{icon.social_url}}" target="_blank"><i class="{{icon.icon_name}}"></i></a>
+		</div>
+	{% endfor %}
+
+{% endblock socialmedia_footer %}
+
+
+
