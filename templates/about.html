@@ -178,9 +178,11 @@
 					<p>{{feature.text2 | safe}}</p>
 					{% endfor %}
 				</div>
+				{% for feature in feature %}
 				<div class="col-lg-6">
-					<img class="nl-sp-img" src="{% static 'img/newslatter.png' %}" alt="">
+					<img class="nl-sp-img" src="{{ feature.image2.url }}" alt="">
 				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</section>

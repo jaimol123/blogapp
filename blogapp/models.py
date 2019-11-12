@@ -43,7 +43,7 @@ class Comments(models.Model):
     name= models.CharField(max_length= 25, null=True, blank=True)
     subject= models.CharField(max_length= 25, null=True, blank=True)
     msg= models.TextField(max_length=255, null=True, blank=True)
-    email= models.EmailField(max_length= 25, null= True, unique=True, blank=True)
+    email= models.EmailField(max_length= 25, null= True,  blank=True)
     date = models.DateTimeField(auto_now_add=True , blank = True, null = True)
     rating= models.IntegerField(blank=True, null=True)
 
@@ -82,15 +82,18 @@ class Contact(models.Model):
         db_table="contact"
         verbose_name="contact"
 
-class Details(models.Model):
+class Address(models.Model):
     address = models.CharField(max_length=255, null=True,blank=True)
-    phone_number = models.IntegerField(null=True,blank=True)
+    phone_number = models.CharField(max_length=255, null=True,blank=True)
+    email = models.EmailField( null=True,blank=True)
+    heading1 = models.CharField(max_length=255, null=True,blank=True)
+    heading2 = models.CharField(max_length=255, null=True,blank=True)
+    heading3 = models.CharField(max_length=255, null=True,blank=True)
 
     class Meta:
         db_table = "details"
         verbose_name = "detail"
-    def __str__(self):
-         return  self.phone_number
+
 
 
 
@@ -108,13 +111,6 @@ class FooterImage(models.Model):
     class Meta:
         db_table="footerimage"
         verbose_name_plural="FooterImage"
-
-    # def image_tag(self):
-    #
-    #     return mark_safe('<img src="{image}" width="150" height="150" />'.format(self.url()))
-    #
-    # image_tag.short_description = 'Image'
-
 
 
 

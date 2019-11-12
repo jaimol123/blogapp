@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.views.generic import ListView,TemplateView,View
 from django.http import HttpResponse,request
 from django.views.generic.detail import DetailView
-from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage,Feature, AboutUs, Rating, Newsletter
-from . forms import Signup,Loginform, Newsletters,Reviews
+from . models import Receipe,Ingredients,Comments,Reeluser,Slider,SocialLinks,Contact,FooterImage,Feature, AboutUs, Rating, Newsletter,Address
+from . forms import Signup,Loginform, Newsletters,Reviews,Contactform
 import json
 from django.contrib.auth.models import User,Group
 from django.contrib.auth import authenticate, login,logout
@@ -168,6 +168,9 @@ class Details(DetailView):
         data['category'] = Receipe.objects.all().values_list('category', flat=True)
         data['comments'] = Comments.objects.all()[:5]
         data['count'] = Comments.objects.all().count()
+        data['myobj'] = Signup()
+        data['mylogin'] = Loginform()
+        print("inside get fn")
         data['reviews'] = Reviews()
 
         return data
@@ -179,48 +182,63 @@ class Details(DetailView):
 class Comment(View):
 
     def post(self, request):
+            print("inside post fn")
             dict6 = {}
-            num=0
-            name=request.user
-            remail = Reeluser.objects.get(first_name = name)
-            email = remail.email
-            print(name,email)
-            rate= request.POST['rate']
-            idno=request.POST['id']
+            name = request.user
+            r1 = Reeluser.objects.get(first_name = name )
+            email = r1.email
+            idno = request.POST['idno']
+            rate = request.POST['rate']
+
+            reviews = Reviews(request.POST)
+
+            if(reviews.is_valid()):
+                print("inside isvalid")
+                subject = reviews.cleaned_data['subject']
+                message = reviews.cleaned_data['message']
 
 
 
-            subject= request.POST['subject']
-            message= request.POST['message']
-            if (name != "" and email != "" and subject != "" and message != ""):
-                c1= Comments(name=name,subject=subject, email=email, msg=message,receipe_name_id=idno, rating=rate)
+                c1 = Comments(name=name, subject=subject, email=email, msg=message, receipe_name_id=idno,rating=rate)
                 c1.save()
-                dict6["status"]=1
+                dict6["status"] = 1
 
-                calc= Comments.objects.filter(receipe_name_id = idno)
-                count =  Comments.objects.filter(receipe_name_id = idno).count()
-                recipe = Receipe.objects.get(id = idno)
-                rimage = recipe. recipe_image
+
+
+                dict6['name']=name
+                dict6['msg']=message
+
+                calc = Comments.objects.filter(receipe_name__id=int(idno))
+                count = Comments.objects.filter(receipe_name__id=int(idno)).count()
+                recipe = Receipe.objects.get(id=int(idno))
+                rimage = recipe.recipe_image
                 rname = recipe.receipe_name
                 print(rname, calc, count)
-                if(count==1):
+                if (count == 1):
                     print("inside 1")
-                    rate= Rating(receipe_name =rname , total =rate, avg =rate, image = rimage)
+                    rate = Rating(receipe_name=rname, total=rate, avg=rate, image=rimage)
                     rate.save()
 
-                elif(count > 1):
+                elif (count > 1):
                     print("inside 2")
-                    r1 = Rating.objects.get(receipe_name = rname)
+                    r1 = Rating.objects.get(receipe_name=rname)
                     total = r1.total
-                    total = total+int(rate)
-                    average = total/count
+                    total = total + int(rate)
+                    average = total / count
                     r1.total = total
                     r1.avg = average
                     r1.save()
+                else:
+                    pass;
+                    jsondata = json.dumps(dict6)
+                    return HttpResponse(jsondata, content_type="application/json")
+
+
 
 
             else:
-                dict6["status"] = 0
+                print(reviews.errors)
+                dict6["status"] = reviews.errors
             jsondata = json.dumps(dict6)
             return HttpResponse(jsondata, content_type="application/json")
 
@@ -251,7 +269,6 @@ class About(View):
             n1.save()
             dict15['status'] = 1
         else:
-            print(new.errors, 'ddddddddddddddd')
             dict15['status'] = new.errors
         jsondata = json.dumps(dict15)
         return HttpResponse(jsondata , content_type="application/json")
@@ -261,28 +278,34 @@ class ContactView(View):
     def get(self, request):
         form = Signup()
         form1 = Loginform()
+        contactform = Contactform()
         link = SocialLinks.objects.all()
         query4 = FooterImage.objects.all()
-        return render(request, "contact.html", {'myobj': form, 'mylogin': form1,'links': link, 'footerimg':query4 })
+        query5 = Address.objects.all()
+        return render(request, "contact.html", {'myobj': form, 'mylogin': form1,'links': link, 'footerimg':query4, 'contactform':Contactform, 'query5':query5 })
 
     def post(self, request):
         dict7={}
-        name= request.POST['name']
-        email= request.POST['email']
-        subject=request.POST['subject']
-        message= request.POST['message']
-        if(name!="" and email!="" and subject!="" and message!=""):
-            contact = Contact()
+        contactform = Contactform(request.POST)
+        if(contactform.is_valid()):
 
-            contact.contact_msg = message
-            contact.contact_email = email
-            contact.contact_name = name
-            contact.contact_subject = subject
-            contact.save()
-            send_mail(subject, message, email, ['jaimoljoseph123456@gmail.com'],fail_silently=False )
-            dict7["status"]=2
+                name = contactform.cleaned_data['name']
+                email = contactform.cleaned_data['email']
+                subject = contactform.cleaned_data['subject']
+                message = contactform.cleaned_data['message']
+
+                contact = Contact()
+
+                contact.contact_msg = message
+                contact.contact_email = email
+                contact.contact_name = name
+                contact.contact_subject = subject
+                contact.save()
+                send_mail(subject, message, email, ['jaimoljoseph123456@gmail.com'],fail_silently=False )
+                dict7["status"]=2
         else:
-            dict7["status"]= 3
+                print(contactform.errors)
+                dict7["status"]= contactform.errors
 
         jsondata= json.dumps(dict7)
         return HttpResponse(jsondata, content_type="application/json")

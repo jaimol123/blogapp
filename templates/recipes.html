@@ -174,7 +174,7 @@
 				<div class="col-lg-4 col-md-6">
 
 					<div class="recipe">
-						<img src="{{image.recipe_image.url}}" alt="">
+						<a href="{% url 'details' image.pk %}"> <img src="{{image.recipe_image.url}}" alt=""></a>
 						<div class="recipe-info-warp">
 							<div class="recipe-info">
 

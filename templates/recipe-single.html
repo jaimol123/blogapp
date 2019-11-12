@@ -228,19 +228,21 @@
 	</section>
 	<!-- Recipe details section end -->
 
+
   <div class="container">
     <div class="row">
+
         <div class="panel panel-default widget">
             <div class="panel-heading">
                 <span class="glyphicon glyphicon-comment"></span>
                 <h3 class="panel-title">
                     Recent Comments</h3>
                 <span class="label label-info">
-                    78</span>
+                    </span>
             </div>
             <div class="panel-body">
                 <ul class="list-group">
-					{% for coment in comments %}
+
 
                     <li class="list-group-item">
                         <div class="row">
@@ -249,23 +251,26 @@
                                 <div>
 
                                     <div class="mic-info">
-                                        By: <a href="#">{{coment.name}}</a> on {{coment.date}}
+                                        By: <a href="#" id="name"></a>
                                     </div>
                                 </div>
-                                <div class="comment-text">
-                                    {{coment.msg}}
+                                <div class="comment-text" id="msg">
+
                                 </div>
 
                             </div>
                         </div>
                     </li>
-					{% endfor %}
+
                 </ul>
 
             </div>
         </div>
+
     </div>
 </div>
+
+
 
 
 
@@ -289,14 +294,17 @@ body { padding-top:30px; }
 		{% if request.user.is_authenticated %}
 		<div class="container">
 			<h4>Leave a comment</h4>
-			<form class="comment-form" id="commentform" method="post">
+			<form class="comment-form" id="commentform"  method = 'post'>
 				{% csrf_token %}
 				<div class="row">
+					<div class="col-md-12">
+						<input type="hidden" placeholder="" name="idno" value="{{view.id}}">
+					</div>
 
 					<div class="col-md-12">
 						{{reviews.as_p}}
-<!--						<input type="text" placeholder="Subject" name="subject" value="">-->
-<!--						<textarea placeholder="Message" name="message" value=""></textarea>-->
+
+
 						<div class="col-lg-12">
 					  <div class="star-rating">
 						<span class="fa fa-star-o" data-rating="1"></span>
@@ -306,7 +314,8 @@ body { padding-top:30px; }
 						<span class="fa fa-star-o" data-rating="5"></span>
 						  <input type="hidden" name="rate" class="rating-value" value=" ">
 					  </div>
-							<h3 id="coment"> </h3>
+							<div class="alert alert-danger" role="alert" id="coment">
+							</div>
 						<button class="site-btn" id="commentsubmit">Send</button>
 
 					</div>

@@ -104,29 +104,32 @@
 </div>
 
 
+
+
+
+
 	<section class="contact-section spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8">
 					<div class="contact-form-warp">
-						<h4>Leave a comment</h4>
+						<h4>CONTACT HERE</h4>
 						<form class="contact-form" id="contactform" method="post">
 							{% csrf_token %}
 							<div class="row">
-								<div class="col-md-6">
-									<input type="text" placeholder="Name" name="name" value="">
-								</div>
-								<div class="col-md-6">
-									<input type="text" placeholder="E-mail"name="email" value="" >
-								</div>
+
 								<div class="col-md-12">
-									<input type="text" placeholder="Subject" name="subject" value="" id="msg">
-									<textarea placeholder="Message"  name="message" value="" ></textarea>
-									<h3 id="demo"> </h3>
-									<button class="site-btn"   id="contactsubmit" >Send</button>
+									{{contactform.as_p}}
 
 
+ 										<div class="alert alert-danger" role="alert" id="demo">
+
+										</div>
+
+
+									<button class="site-btn"  id="contactsubmit" >Send</button>
 								</div>
+
 							</div>
 						</form>
 					</div>
@@ -135,24 +138,26 @@
 					<div class="contact-logo">
 						<img src="{% static 'img/logo.png' %}" alt="">
 					</div>
+
 					<div class="contact-info">
+						{% for details in query5 %}
 						<ul class="ct-list">
 							<li>
-								<h6>Address:</h6>
-								<p>481 Creekside Lane Avila</p>
-								<p>Beach, CA 93424</p>
+								<h6>{{details.heading1}}:</h6>
+								<p>{{details.address}}</p>
+
 							</li>
 							<li>
-								<h6>Phone:</h6>
-								<p>+53 345 7953 32453</p>
-								<p>+53 345 7557 822112</p>
+								<h6>{{details.heading2}}:</h6>
 							</li>
+							<li>198972816271276</li>
+
 							<li>
-								<h6>Email:</h6>
-								<p>yourmail@gmail.com</p>
+								<h6>{{details.heading3}}:</h6>
+								<p>{{details.email}}</p>
 							</li>
 						</ul>
-
+						{% endfor %}
 						<div class="contact-social">
 								{% for icons in links%}
 							<a href="{{icons.social_url}}" target="_blank" ><i class="{{icons.icon_name}}"></i></a>
@@ -178,6 +183,8 @@
 
 <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWTIlluowDL-X4HbYQt3aDw_oi2JP0Krc"></script>-->
 <!--<script src="{% static 'js/map.js' %}"></script>-->
+
+
 
 <script>
 	$("#apple").click(function(e){
