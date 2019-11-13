@@ -171,25 +171,27 @@
 
 
 
-                    <img src="{{i.recipe_image.url}}" alt="">
+                    <a href="{% url 'details' i.slug %}"><img src="{{i.recipe_image.url}}" alt=""></a>
                     <div class="recipe-info-warp">
 
                         <div class="recipe-info">
                             <h3>{{i.receipe_name}}</h3>
-                            <div class="rating">
 
-                                {% for rated in rate %}
-								{% if   rated.receipe_name in i.receipe_name  %}
+
+                            <div class="rating">
+                                     {% for rated in rate %}
+
 
 									{% with ''|center:rated.avg as range %}
-                                        {% for _ in range %}
-                                             <i class="fa fa-star"></i>
-                                        {% endfor %}
-                                        {% endwith %}
 
-								{% else %}
+                                         {% for _ in "xxxxx" %}
+                                                 <i class="fa fa-star {% if forloop.counter <= rated.avg  %} fa fa-star-o {%endif %} "></i>
+                                         {% endfor %}
+                                    {% endwith %}
 
-									{% endif %}
+							</div>
+
+
 								{% endfor %}
                             </div>
                         </div>

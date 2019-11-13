@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
 from django_google_maps import fields as map_fields
 from django.utils.safestring import mark_safe
+from django.urls import reverse
+from django.utils.html import escape
 
 
 
@@ -15,6 +17,16 @@ class Receipe(models.Model):
     step = RichTextField(null= True)
     pub_date = models.DateField(default=datetime.datetime.now, null=True, blank=True)
     prep_time = models.CharField(max_length=25, null=True, blank=True)
+    slug = models.SlugField(null = True, blank = True)
+
+    # def get_absolute_url(self):
+    #     return reverse("details", kwargs={"slug": self.slug})
+
+    def image_tag(self):
+
+        return u'<img src="%s" />' % escape('staticfiles/img')
+        image_tag.short_description = 'Image'
+        image_tag.allow_tags = True
 
     class Meta:
             db_table="receipe"

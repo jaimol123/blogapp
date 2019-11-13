@@ -10,7 +10,6 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
@@ -20,6 +19,10 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import math
 import smtplib
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
+from django.template.loader import render_to_string
 
 
 
@@ -27,6 +30,7 @@ import smtplib
 class Home(View):
 
     def get(self,request):
+        faded=0
         form=Signup()
         form1 = Loginform()
         query1 = Receipe.objects.all().order_by('-pub_date')[:6]
@@ -34,6 +38,7 @@ class Home(View):
         query3 = SocialLinks.objects.all()
         query4= FooterImage.objects.all()
         query5 = Rating.objects.order_by('avg')[:4]
+
 
         return render(request,"index.html",{'myobj':form, 'mylogin':form1, 'query1':query1, "slider" : query2, 'social_icons':query3, 'footerimg':query4 , 'rate': query5})
 
@@ -184,7 +189,9 @@ class Comment(View):
     def post(self, request):
             print("inside post fn")
             dict6 = {}
-            name = request.user
+            name = request.user.username
+            print("name-----",name)
+            print(type(name))
             r1 = Reeluser.objects.get(first_name = name )
             email = r1.email
             idno = request.POST['idno']
@@ -202,9 +209,6 @@ class Comment(View):
                 c1 = Comments(name=name, subject=subject, email=email, msg=message, receipe_name_id=idno,rating=rate)
                 c1.save()
                 dict6["status"] = 1
-
-
-
                 dict6['name']=name
                 dict6['msg']=message
 
@@ -301,7 +305,15 @@ class ContactView(View):
                 contact.contact_name = name
                 contact.contact_subject = subject
                 contact.save()
-                send_mail(subject, message, email, ['jaimoljoseph123456@gmail.com'],fail_silently=False )
+
+
+                subject, from_email, to = subject, email, 'jaimol123456@gmail.com'
+
+                html_content = render_to_string('email.html', {'username':name})
+                msg = EmailMultiAlternatives(subject, message, from_email, [to])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+
                 dict7["status"]=2
         else:
                 print(contactform.errors)

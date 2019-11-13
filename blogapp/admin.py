@@ -25,9 +25,11 @@ class CommentsAdmin(admin.ModelAdmin):
 
 class ReceipeAdmin(admin.ModelAdmin):
 
-    list_display = ('receipe_name', 'category', 'type', 'recipe_image')
+    list_display = ('receipe_name', 'category', 'type', 'image_tag')
+    readonly_fields = ('image_tag',)
     search_fields = ['receipe_name']
     list_filter = ['pub_date']
+    prepopulated_fields = {'slug': ('receipe_name',)}
     inlines = [IngredientsInline]
 
 

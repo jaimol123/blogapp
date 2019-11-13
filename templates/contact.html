@@ -3,6 +3,8 @@
 {% block content %}
 {% load socialaccount %}
 
+
+
 	<!-- Hero section -->
 	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
 		<div class="container">
@@ -18,6 +20,13 @@
 		                </div>
 	            {% endfor %}
         {% endblock socialmedia_links %}
+
+<style>
+    .btn{
+    padding : 2px 4px;
+    }
+
+</style>
 
 <div class="container">
     <!-- Modal -->
@@ -106,8 +115,6 @@
 
 
 
-
-
 	<section class="contact-section spad">
 		<div class="container">
 			<div class="row">
@@ -122,13 +129,21 @@
 									{{contactform.as_p}}
 
 
- 										<div class="alert alert-danger" role="alert" id="demo">
 
+										<div class="alert alert-danger" role="alert" id="demo">
 										</div>
 
 
 									<button class="site-btn"  id="contactsubmit" >Send</button>
-								</div>
+									</div>
+
+
+
+
+
+
+
+
 
 							</div>
 						</form>
@@ -161,11 +176,7 @@
 						<div class="contact-social">
 								{% for icons in links%}
 							<a href="{{icons.social_url}}" target="_blank" ><i class="{{icons.icon_name}}"></i></a>
-<!--							<a href="#"><i class="fa fa-facebook"></i></a>-->
-<!--							<a href="#"><i class="fa fa-twitter"></i></a>-->
-<!--							<a href="#"><i class="fa fa-dribbble"></i></a>-->
-<!--							<a href="#"><i class="fa fa-behance"></i></a>-->
-<!--							<a href="#"><i class="fa fa-linkedin"></i></a>-->
+
 								{% endfor %}
 						</div>
 

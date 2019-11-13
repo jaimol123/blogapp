@@ -21,7 +21,12 @@
 	{% endfor %}
 {% endblock socialmedia_links %}
 
+<style>
+    .btn{
+    padding : 2px 4px;
+    }
 
+</style>
  <div class="container">
     <!-- Modal -->
     <div class="modal fade" id="login11" role="dialog">
@@ -187,8 +192,9 @@
 		</div>
 	</section>
 	<!-- Newsletter section end -->
-<script>
-	$("#apple").click(function(e){-->
+
+ <script>
+	$("#apple").click(function(e){
 	e.preventDefault();
 	$.ajax({
 	url:"{% url 'login' %}",
@@ -197,33 +203,20 @@
 	data:$("#loginform").serialize(),
 	success:function(data)
 		{
-			if(data.status==1)
+			if(data.val1==1)
 			{
-	         document.getElementById("news").innerHTML = "signin successful!";
+	         document.getElementById("next").innerHTML = "signin successful!";
 			window.location.replace("/")
 			}
-			else{
-			 $("#loginform :input:not(input[type='hidden'],input[type='submit'])").each(function ()
-                  {
-
-                            var current = $(this).parent();
-                            var current_name = $(this).attr('name');
-                            $.each(data.key, function (index, value)
-                            {
-                             if (current_name == index)
-                             {
-
-                                   current.after("<div class='error'></div>");
-
-                                   current.next().html(value);
-
-
-                                    }
-                                });
-                              });
-
-
-		}
+			else if(data.val1==0)
+			{
+			 document.getElementById("next").innerHTML = "wrong username/password!";
+			}
+			else if(data.val1 ==5)
+			{
+			 document.getElementById("next").innerHTML = "empty fields not allowed!";
+			}
+		},
 		error:function()
 		{
 		 document.getElementById("next").innerHTML = "error!";
@@ -232,6 +225,13 @@
 });
 
 </script>
+
+
+
+
+
+
+
 
  <script>
 	$("#newssubmit").click(function(e){

@@ -19,6 +19,15 @@
 	{% endfor %}
 {% endblock socialmedia_links %}
 
+
+<style>
+    .btn{
+    padding : 2px 4px;
+    }
+
+</style>
+
+
 <div class="container">
     <!-- Modal -->
     <div class="modal fade" id="login11" role="dialog">
@@ -63,6 +72,7 @@
 
 
 </div>
+
 
 
 <div class="container">
@@ -120,7 +130,7 @@
 				<form class="big-search-form" action="{% url 'list' %}" method="post" id="recipe_form">
 					{% csrf_token %}
 					<select name="type">
-						<option selected="selected"></option>
+						<option value="">type</option>
 
 						<option value="breakfast">breakfast</option>
 						<option value="lunch">lunch</option>
@@ -131,7 +141,7 @@
 					<select name="category">
 
 						{% for item in categories %}
-						<option selected="selected"></option>
+						<option value="">category</option>
 						<option>{{item}}</option>
 							{% endfor %}
 
@@ -161,12 +171,21 @@
 
 				<div class="col-md-4">
 					<div class="recipe-view">
-						<i class="fa fa-bars"></i>
-						<i class="fa fa-th active"></i>
+<!--						<i class="fa fa-bars"></i>-->
+<!--						<i class="fa fa-th active"></i>-->
 					</div>
 				</div>
 			</div>
 			<div class="row">
+
+				<style>
+					a {
+    					color: white !important;
+
+					}
+
+
+				</style>
 
 
 				{% if  recipes %}
@@ -174,7 +193,7 @@
 				<div class="col-lg-4 col-md-6">
 
 					<div class="recipe">
-						<a href="{% url 'details' image.pk %}"> <img src="{{image.recipe_image.url}}" alt=""></a>
+						<a href="{% url 'details' image.slug %}"> <img src="{{image.recipe_image.url}}" alt=""></a>
 						<div class="recipe-info-warp">
 							<div class="recipe-info">
 
@@ -216,6 +235,15 @@
 				{% endif %}
 
 			</div>
+
+			<style>
+				.pagination>li>a,
+				.pagination>li>span {
+
+   				 padding: 12px 24px;
+
+
+			</style>
 
 			<div class="site-pagination">
 

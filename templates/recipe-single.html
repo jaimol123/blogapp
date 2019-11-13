@@ -22,7 +22,12 @@
 	{% endfor %}
 {% endblock socialmedia_links %}
 
+<style>
+    .btn{
+    padding : 2px 4px;
+    }
 
+</style>
 
 <div class="container">
     <!-- Modal -->
@@ -127,7 +132,7 @@
 				<form class="big-search-form" action="{% url 'list' %}" method="post">
 					{% csrf_token %}
 					<select name="type">
-						<option selected="selected"></option>
+						<option value="">type</option>
 						<option>Breakfast</option>
 						<option>Lunch</option>
 						<option>Dinner</option>
@@ -136,7 +141,7 @@
 					<select name="category">
 
 						{% for item in category%}
-						<option selected="selected"></option>
+						<option value="">category</option>
 						<option>{{item}}</option>
 							{% endfor %}
 
@@ -231,16 +236,19 @@
 
   <div class="container">
     <div class="row">
-
+		{% if comments %}
         <div class="panel panel-default widget">
             <div class="panel-heading">
                 <span class="glyphicon glyphicon-comment"></span>
                 <h3 class="panel-title">
                     Recent Comments</h3>
                 <span class="label label-info">
-                    </span>
+                    {{count}}</span>
             </div>
+
             <div class="panel-body">
+
+				{% for coment in comments %}
                 <ul class="list-group">
 
 
@@ -251,11 +259,12 @@
                                 <div>
 
                                     <div class="mic-info">
-                                        By: <a href="#" id="name"></a>
+                                        By: <a href="#" id="name">{{coment.name}}</a>
+										{{coment.date}}
                                     </div>
                                 </div>
                                 <div class="comment-text" id="msg">
-
+									{{coment.msg}}
                                 </div>
 
                             </div>
@@ -263,10 +272,15 @@
                     </li>
 
                 </ul>
+				{% endfor %}
+				</div>
 
-            </div>
+
+
         </div>
-
+				{% else %}
+				<h4>NO COMMENTS FOUND</h4>
+				{% endif %}
     </div>
 </div>
 
